@@ -1,0 +1,78 @@
+.orders{
+    display: flex;
+    justify-content: center;
+    font-family:Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg,#f7f9fc,#eef5ff);
+    .container {
+        width: 1400px;
+        padding: 40px 20px;
+
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+
+            h1 { font-size: 26px; color:#1a1a1a; }
+        }
+
+        table { display: none; }
+
+        .bid-grid {
+            display: grid;
+            grid-template-columns: repeat(3,minmax(0,1fr));
+            gap: 20px;
+        }
+
+        .bid-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+            border: 1px solid #e9ecef;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            grid-template-areas:
+                "head price"
+                "msg msg"
+                "actions actions";
+            row-gap: 12px;
+        }
+        .bid-head { grid-area: head; display:flex; align-items:center; gap:12px; }
+        .avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; border:3px solid #1dbf73; }
+        .who { display:flex; flex-direction:column; }
+        .name { font-weight:700; color:#1a1a1a; }
+        .meta { font-size:12px; color:#6c757d; }
+        .price { grid-area: price; font-weight:800; font-size:20px; color:#1dbf73; align-self:center; }
+        .badges { display:flex; gap:8px; margin-top:6px; }
+        .badge { background:#eefaf5; color:#0f5132; border:1px solid #d7f3e6; border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; }
+        .msg { grid-area: msg; color:#333; line-height:1.6; background:#f8f9fa; border:1px solid #e9ecef; padding:12px; border-radius:12px; }
+        .actions { grid-area: actions; display:flex; justify-content:flex-end; gap:10px; }
+        .approve-btn { background:linear-gradient(135deg,#1dbf73,#19a463); color:#fff; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; }
+        .complete-btn { background:linear-gradient(135deg,#28a745,#20c997); color:#fff; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; }
+        .profile-link { color:#446ee7; text-decoration:none; font-weight:700; }
+
+        @media (max-width: 1200px){ .bid-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+        @media (max-width: 768px){ .bid-grid { grid-template-columns: 1fr; } .container{ width:100%; } }
+    }
+
+    /* Modal styling reused from gig modal */
+    .bid-modal-overlay { position: fixed; inset:0; background: rgba(0,0,0,0.45); display:flex; align-items:center; justify-content:center; z-index:2000; }
+    .bid-modal { width:520px; max-width:95vw; background:#fff; border-radius:16px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,0.25); animation: popIn .2s ease; }
+    .bid-modal h3 { margin:0 0 8px 0; }
+    .bid-modal .sub { margin:0 0 16px 0; color:#666; font-size:14px; }
+    .bid-field { display:flex; flex-direction:column; gap:8px; margin-bottom:14px; }
+    .bid-field label { font-size:13px; color:#555; font-weight:600; }
+    .bid-field input, .bid-field textarea, .bid-field select { border:2px solid #e9ecef; border-radius:10px; padding:10px 12px; font-size:14px; }
+    .bid-field input:focus, .bid-field textarea:focus, .bid-field select:focus { outline:none; border-color:#1dbf73; }
+    .bid-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:6px; }
+    .bid-actions .secondary { background:#f1f3f5; color:#333; padding:10px 16px; border-radius:10px; border:none; font-weight:600; cursor:pointer; }
+    .bid-actions .primary { background:linear-gradient(135deg,#1dbf73,#19a463); color:#fff; padding:10px 16px; border-radius:10px; border:none; font-weight:600; cursor:pointer; }
+
+    .stars-select { display:inline-flex; gap:6px; font-size:24px; }
+    .stars-select .star { color:#dcdcdc; cursor:pointer; transition: transform .1s ease; }
+    .stars-select .star.filled { color:#ffc107; }
+    .stars-select .star:hover { transform: scale(1.15); }
+
+    @keyframes popIn { from { transform: scale(.98); opacity:0 } to { transform: scale(1); opacity:1 } }
+}

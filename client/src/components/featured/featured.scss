@@ -1,0 +1,172 @@
+.featured {
+  height: 600px;
+  display: flex;
+  justify-content: flex-start;
+  color: white;
+  overflow: hidden;
+  background-position: center;
+  background-image: url('hero2.webp');
+  // animation: change  infinite;
+  // animation-duration: 60s;
+  // background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  animation-delay: 0ms;
+
+  .container {
+    width: 50%;
+    max-width: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    left: 0;
+    padding-left: 100px;
+    padding-right: 50px;
+
+    .left {
+      margin-top: 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      width: 100%;
+
+      h1 {
+        font-size: 50px;
+        margin: 0;
+        line-height: 1.1;
+
+        span {
+          font-style: italic;
+          font-weight: 300;
+        }
+      }
+
+      .search {
+        background-color: white;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        overflow: hidden;
+        margin: 0;
+
+        .searchInput {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          img {
+            width: 20px;
+            height: 20px;
+            margin: 10px;
+          }
+
+          input {
+            border: none;
+            outline: none;
+            padding: 15px 0;
+            font-size: 16px;
+
+            &::placeholder {
+              color: gray;
+            }
+          }
+        }
+
+        button {
+          width: 120px;
+          height: 50px;
+          border: none;
+          background-color: #1dbf73;
+          color: white;
+          cursor: pointer;
+          font-weight: 400;
+          font-size: large;
+        }
+      }
+
+      .popular {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: 'Montserrat', 'sans-serif';
+        font-size: 16px/24px;
+        margin: 0;
+
+        span {
+          width: max-content;
+        }
+
+        button {
+          width: max-content;
+          color: white;
+          border: 1px solid white;
+          padding: 5px 10px;
+          border-radius: 20px;
+          background-color: transparent;
+          font-size: 14px;
+          font-family: 'Montserrat', 'sans-serif';
+
+          &:hover {
+            background: white;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes change {
+  0% {
+    background-image: url('hero1.webp');
+  }
+  20% {
+    background-image: url('hero2.webp');
+  }
+  40% {
+    background-image: url('hero3.webp');
+  }
+
+  60% {
+    background-image: url('hero4.webp');
+  }
+
+  80% {
+    background-image: url('hero5.webp');
+  }
+
+  100% {
+    background-image: url('hero6.webp');
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .featured {
+    .container {
+      padding-left: 20px;
+      
+      .left {
+        h1 {
+          font-size: 36px;
+        }
+        
+        .search {
+          flex-direction: column;
+          gap: 10px;
+          
+          button {
+            width: 100%;
+          }
+        }
+        
+        .popular {
+          flex-wrap: wrap;
+          justify-content: flex-start;
+        }
+      }
+    }
+  }
+}

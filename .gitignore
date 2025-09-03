@@ -1,0 +1,52 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Runtime data
+.cache/
+.nuxt/
+.next/
+coverage/
+.turbo/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor settings
+.vscode/
+.idea/
+*.sw?
+
+# Parcel, Vite, etc.
+.parcel-cache/
+.vite/
+
+# Optional: uploads, databases, temp
+uploads/
+data/
+tmp/
+
+# API-specific
+api/.env
+api/.env.local
+
+# Client-specific
+client/.env
+client/.env.local

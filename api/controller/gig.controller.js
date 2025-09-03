@@ -1,0 +1,111 @@
+import Gig from '../models/gig.model.js';
+import createError from '../utils/createError.js';
+export const createGig = async (req, res, next) => {
+  if (req.isSeller === false) { return next(createError(403, 'Only Seller Create a Gig')); }
+
+  const newGig = new Gig({
+    userId: req.userId,
+    ...req.body
+  })
+  console.log('Creating gig with data:', req.body);
+  console.log('Category:', req.body.cat);
+  try {
+    const savedGig = await newGig.save();
+    console.log('Saved gig:', savedGig);
+    res.status(201).json(savedGig);
+  } catch (error) {
+    console.error('Error creating gig:', error);
+    next(error);
+  }
+};
+
+export const deleteGig = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (gig.userId !== req.userId) next(403, 'you can delete your gig');
+  } catch (err) {
+    next(err);
+  }
+  await Gig.findOneAndDelete(req.params.id);
+  res.status(200).send('gig has been deleted');
+};
+
+export const getGig = async (req, res, next) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig) return next(createError(404, 'Gig not found'));
+    res.status(200).send(gig);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getGigs = async (req, res, next) => {
+  const q = req.query;
+  console.log('Query parameters received:', q);
+  
+  // Decode URL-encoded parameters
+  const decodedCat = q.cat ? decodeURIComponent(q.cat) : null;
+  const decodedSearch = q.search ? decodeURIComponent(q.search) : null;
+  
+  const filters = {
+    ...(q.userId && { userId: q.userId }),
+    ...(decodedCat && { cat: decodedCat }),
+    ...((q.min || q.max) && {
+      priceMin: {
+        ...(q.min && { $gte: parseFloat(q.min) }),
+        ...(q.max && { $lte: parseFloat(q.max) }),
+      },
+    }),
+    ...(decodedSearch && { title: { $regex: decodedSearch, $options: "i" } }),
+    // Only show available gigs (not in progress or completed)
+    ...(q.status ? {} : { status: 'available' })
+  };
+  
+  console.log('Applied filters:', filters);
+  console.log('Decoded category:', decodedCat);
+  
+  try {
+    const gigs = await Gig.find(filters).sort({ [q.sort]: -1 });
+    console.log(`Found ${gigs.length} gigs for category: ${decodedCat}`);
+    if (gigs.length > 0) {
+      console.log('Sample gig category:', gigs[0].cat);
+    }
+    res.status(200).send(gigs);
+  } catch (err) {
+    console.error('Error fetching gigs:', err);
+    next(err);
+  }
+};
+
+export const updateGigStatus = async (req, res, next) => {
+  try {
+    const { gigId } = req.params;
+    const { status } = req.body;
+    
+    // Verify the user owns this gig
+    const gig = await Gig.findById(gigId);
+    if (!gig) {
+      return next(createError(404, 'Gig not found'));
+    }
+    
+    if (gig.userId !== req.userId) {
+      return next(createError(403, 'You can only update your own gigs'));
+    }
+    
+    // Validate status
+    if (!['available', 'in_progress', 'completed'].includes(status)) {
+      return next(createError(400, 'Invalid status'));
+    }
+    
+    const updatedGig = await Gig.findByIdAndUpdate(
+      gigId,
+      { status },
+      { new: true }
+    );
+    
+    res.status(200).json(updatedGig);
+  } catch (err) {
+    next(err);
+  }
+};

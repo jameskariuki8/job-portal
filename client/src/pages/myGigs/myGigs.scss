@@ -1,0 +1,43 @@
+.myGigs {
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(135deg,#f7f9fc,#eef5ff);
+
+    .container {
+        width: 1400px;
+        padding: 40px 20px;
+
+        .title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+
+            h1 { margin:0; }
+            button { background:#1dbf73; color:#fff; padding:10px 14px; border:none; border-radius:10px; font-weight:700; cursor:pointer; }
+        }
+
+        .grid { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:16px; }
+
+        .gigcard { background:#fff; border:1px solid #e9ecef; border-radius:16px; box-shadow:0 12px 30px rgba(0,0,0,0.06); overflow:hidden; display:flex; flex-direction:column; }
+        .thumb img { width:100%; height:180px; object-fit:cover; }
+        .content { padding:14px; display:flex; flex-direction:column; gap:8px; }
+        .row1 { display:flex; align-items:center; justify-content:space-between; }
+        .titletext { margin:0; font-size:18px; }
+        .status { padding:4px 10px; border-radius:999px; font-size:11px; font-weight:700; text-transform:uppercase; }
+        .status.in_progress { background:#fff3cd; color:#856404; border:1px solid #ffe69c; }
+        .status.completed { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+        .row2 { display:flex; align-items:center; gap:8px; }
+        .badge { background:#eefaf5; color:#0f5132; border:1px solid #d7f3e6; border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; }
+        .badge.blue { background:#eef2ff; color:#3b5bdb; border-color:#dbe4ff; }
+        .row3 { display:flex; }
+        .ghost { background:transparent; border:1px solid #e9ecef; padding:6px 10px; border-radius:10px; cursor:pointer; }
+
+        .actions { display:flex; gap:8px; padding:12px 14px; border-top:1px solid #f1f3f5; }
+        .actions .edit { background:#446ee7; color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:700; cursor:pointer; }
+        .actions .delete { background:#dc3545; color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:700; cursor:pointer; }
+
+        @media (max-width: 1100px) { .grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+        @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } }
+    }
+}

@@ -1,0 +1,120 @@
+.gig-status-manager {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+
+    .status-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e9ecef;
+
+        h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .current-status {
+            padding: 6px 16px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    }
+
+    .status-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+
+        .status-btn {
+            padding: 10px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            background: white;
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 100px;
+
+            &:hover:not(:disabled) {
+                border-color: #1dbf73;
+                color: #1dbf73;
+                transform: translateY(-1px);
+            }
+
+            &.active {
+                background: #1dbf73;
+                border-color: #1dbf73;
+                color: white;
+            }
+
+            &:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    .updating-indicator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        color: #666;
+        font-size: 0.9rem;
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #e9ecef;
+            border-top: 2px solid #1dbf73;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .gig-status-manager {
+        .status-header {
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .status-actions {
+            justify-content: center;
+            
+            .status-btn {
+                min-width: 80px;
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+        }
+    }
+}
+
+
+
+

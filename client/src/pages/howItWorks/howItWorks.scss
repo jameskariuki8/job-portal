@@ -1,0 +1,35 @@
+.how {
+  font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  .hero { background: linear-gradient(135deg,#1dbf73,#19a463); color:#fff; padding: 60px 20px; }
+  .hero .wrap { max-width: 1100px; margin:0 auto; text-align:center; }
+  .hero .icon { font-size:42px; }
+  .hero h1 { margin:8px 0 6px 0; font-size: 36px; }
+  .hero .sub { opacity:.95; }
+  .cta { display:flex; gap:12px; justify-content:center; margin-top:14px; }
+  .cta button { background:#fff; color:#157347; border:none; padding:10px 16px; border-radius:10px; font-weight:700; cursor:pointer; }
+  .cta .ghost { background:transparent; color:#fff; border:1px solid rgba(255,255,255,.6); }
+
+  .grid { max-width:1100px; margin:24px auto; padding:0 20px; display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:16px; }
+  .card { background:#fff; border:1px solid #e9ecef; border-radius:16px; padding:18px; box-shadow:0 12px 30px rgba(0,0,0,.06); }
+  .badge { display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:700; background:#eefaf5; color:#0f5132; border:1px solid #d7f3e6; margin-bottom:6px; }
+  .badge.purple { background:#f3f0ff; color:#5f3dc4; border-color:#e5dbff; }
+  .badge.blue { background:#e7f5ff; color:#1c7ed6; border-color:#d0ebff; }
+  .card h2 { margin:6px 0 10px 0; font-size:20px; }
+  .card ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; }
+  .card li { display:flex; gap:10px; align-items:flex-start; }
+  .card li span { width:24px; height:24px; display:inline-flex; align-items:center; justify-content:center; }
+
+  .faq { max-width:1100px; margin:10px auto 24px auto; padding:0 20px; }
+  .faq h2 { margin: 0 0 10px 0; }
+  .faq .items { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap:12px; }
+  .faq .item { background:#fff; border:1px solid #e9ecef; border-radius:12px; padding:14px; }
+  .faq .item h3 { margin:0 0 6px 0; }
+  .faq .item p { margin:0; color:#333; }
+
+  .footer-cta { background: linear-gradient(135deg,#f8fafc,#e2e8f0); padding: 34px 20px; }
+  .footer-cta .wrap { max-width:1100px; margin:0 auto; text-align:center; }
+
+  @media (max-width: 1000px){ .grid { grid-template-columns: 1fr 1fr; } .faq .items{ grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px){ .grid { grid-template-columns: 1fr; } .faq .items{ grid-template-columns: 1fr; } }
+}
+
