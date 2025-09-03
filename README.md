@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to Fiverr Clone, a dynamic freelance marketplace designed to connect clients with a diverse pool of talented freelancers. This project is built using modern technologies including React.js, Node.js, Express.js, and MongoDB. Whether you're a client looking for services or a freelancer eager to showcase your skills, Fiverr Clone has you covered.
+Welcome to Job Portal, a dynamic freelance marketplace designed to connect clients with a diverse pool of talented freelancers. This project is built using modern technologies including React.js, Node.js, Express.js, and MongoDB. Whether you're a client looking for services or a freelancer eager to showcase your skills, Fiverr Clone has you covered.
 
 ## Features
 
@@ -24,8 +24,6 @@ Welcome to Fiverr Clone, a dynamic freelance marketplace designed to connect cli
 
 - **Media Storage:** Seamlessly store images and videos using Cloudinary for efficient content management.
 
-## Demo
-https://www.linkedin.com/posts/anurag-dalsaniya-48a48b254_fiverrclone-reactjs-nodejs-activity-7128618535349612544-Y9U3?utm_source=share&utm_medium=member_android
 
 ## Tech Stack
 - SCSS
