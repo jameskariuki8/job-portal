@@ -1,4 +1,4 @@
-# Fiverr Clone - Freelance Marketplace
+# Job Portal - Freelance Marketplace
 
 ## Overview
 
