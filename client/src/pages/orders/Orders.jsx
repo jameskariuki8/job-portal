@@ -96,7 +96,7 @@ const Orders = () => {
     const messageUser = async (toId) => {
         try {
             const fromId = currentUser._id;
-            const convoId = fromId + toId;
+            const convoId = [fromId, toId].sort().join('');
             const res = await newRequest.get(`/conversations/single/${convoId}`);
             window.location.href = `/message/${res.data.id}`;
         } catch (err) {

@@ -12,7 +12,6 @@ const HowItWorks = () => {
           <h1>How Job Portal Works</h1>
           <p className="sub">A simple, transparent workflow for creators and bidders – from posting to completion.</p>
           <div className="cta">
-            <button onClick={()=>navigate('/add')}>Create a Gig</button>
             <button className="ghost" onClick={()=>navigate('/gigs')}>Browse Gigs</button>
           </div>
         </div>

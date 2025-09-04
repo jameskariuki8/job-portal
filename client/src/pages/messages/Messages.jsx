@@ -28,9 +28,12 @@ const Messages = () => {
         mutation.mutate(id);
     };
 
-    // Helper function to get other user's ID
+    // Helper: robustly get the other participant regardless of roles
     const getOtherUserId = (conversation) => {
-        return currentUser.isSeller ? conversation.buyerId : conversation.sellerId;
+        if (!conversation) return null;
+        return currentUser._id === conversation.sellerId
+            ? conversation.buyerId
+            : conversation.sellerId;
     };
 
     // Fetch all unique user IDs from conversations

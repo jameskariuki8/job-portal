@@ -191,7 +191,7 @@ const Gig = () => {
                                             }
                                             const sellerId = data.userId;
                                             const buyerId = currentUser._id;
-                                            const convoId = sellerId + buyerId;
+                                            const convoId = [sellerId, buyerId].sort().join('');
                                             try {
                                                 const res = await newRequest.get(`/conversations/single/${convoId}`);
                                                 navigate(`/message/${res.data.id}`);

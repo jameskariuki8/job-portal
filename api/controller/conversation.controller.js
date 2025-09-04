@@ -3,17 +3,19 @@ import createError from '../utils/createError.js';
 export const createConversation = async (req, res, next) => {
     try {
         if (!req.body?.to) return next(createError(400, 'Missing receiver id'));
-        const id = req.isSeller ? req.userId + req.body.to : req.body.to + req.userId;
+        // Allow any two users to converse (seller-seller, buyer-buyer, or mixed)
+        const id = req.userId < req.body.to ? req.userId + req.body.to : req.body.to + req.userId;
         // Return existing if found (idempotent)
         let existing = await Conversation.findOne({ id });
         if (existing) return res.status(200).send(existing);
 
+        // Store participants generically; maintain fields for backward compatibility
         const newconversation = new Conversation({
             id,
-            sellerId: req.isSeller ? req.userId : req.body.to,
-            buyerId: req.isSeller ? req.body.to : req.userId,
-            readBySeller: req.isSeller,
-            readByBuyer: !req.isSeller,
+            sellerId: req.userId,
+            buyerId: req.body.to,
+            readBySeller: true,
+            readByBuyer: false,
         });
         const savedConversation = await newconversation.save();
         res.status(201).send(savedConversation);
