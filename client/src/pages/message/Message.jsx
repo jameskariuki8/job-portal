@@ -56,6 +56,10 @@ const Message = () => {
       queryClient.invalidateQueries(["conversations"]);
       setMessageText("");
     },
+    onError: (err) => {
+      const msg = err?.response?.data || 'Failed to send message';
+      alert(typeof msg === 'string' ? msg : 'You cannot message this user');
+    }
   });
 
   // Auto-scroll to bottom when new messages arrive
@@ -113,6 +117,7 @@ const Message = () => {
 
   return (
     <div className="message">
+      <div className="chat-frame">
       {/* WhatsApp-style header */}
       <div className="chat-header">
         <div className="header-left">
@@ -134,17 +139,7 @@ const Message = () => {
             </div>
           </div>
         </div>
-        <div className="header-right">
-          <button className="header-action-btn">
-            <span className="action-icon">📞</span>
-          </button>
-          <button className="header-action-btn">
-            <span className="action-icon">📹</span>
-          </button>
-          <button className="header-action-btn">
-            <span className="action-icon">⋮</span>
-          </button>
-        </div>
+        {/* header-right icons removed as requested */}
       </div>
 
       {/* Messages container */}
@@ -217,6 +212,7 @@ const Message = () => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };

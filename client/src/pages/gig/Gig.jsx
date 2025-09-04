@@ -16,6 +16,7 @@ const Gig = () => {
     const [bidDays, setBidDays] = useState(1);
     const [bidMessage, setBidMessage] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [showReviewsModal, setShowReviewsModal] = useState(false);
     
     const { isLoading, error, data } = useQuery({
         queryKey: ['gig'],
@@ -263,9 +264,7 @@ const Gig = () => {
                                 </div>
                         )}
 
-                        <div className="reviews-section">
-                            <Reviews gigId={id} key={id} />
-                            </div>
+                        {/* Reviews moved to modal; open via button */}
                     </div>
 
                     <div className="gig-sidebar">
@@ -313,10 +312,10 @@ const Gig = () => {
 
                             <div className="action-buttons">
                         {isOwner ? (
-                                    <Link to={`/gigs/${id}/bids`} className="view-bids-btn">
+                                    <button className="view-bids-btn" onClick={()=>navigate('/orders')}>
                                         <span className="btn-icon">👥</span>
                                         View Bids
-                            </Link>
+                                    </button>
                         ) : approvedBid ? (
                                     <button className="approved-btn" disabled>
                                         <span className="btn-icon">✅</span>
@@ -333,20 +332,14 @@ const Gig = () => {
                                         Place Bid
                                     </button>
                                 )}
+                                <button className="reviews-open-btn" onClick={()=>setShowReviewsModal(true)}>
+                                    <span className="btn-icon">⭐</span>
+                                    Reviews
+                                </button>
                             </div>
                         </div>
                         
-                        {isOwner && (
-                            <div className="gig-management">
-                                <GigStatusManager 
-                                    gig={data} 
-                                    onStatusUpdate={(updatedGig) => {
-                                        // Update the local data
-                                        window.location.reload();
-                                    }}
-                                />
-                            </div>
-                        )}
+                        {/* Owner management disabled on gig page; status is read-only in sidebar */}
                     </div>
                 </div>
             </div>
@@ -373,6 +366,20 @@ const Gig = () => {
                             <button className="primary" disabled={submitting} onClick={submitBid}>{submitting ? 'Submitting...' : 'Submit Bid'}</button>
                         </div>
                         <div className="bid-hint">Your bid must be within the gig range and delivery time.</div>
+                    </div>
+                </div>
+            )}
+
+            {showReviewsModal && (
+                <div className="reviews-modal-overlay" onClick={() => setShowReviewsModal(false)}>
+                    <div className="reviews-modal" onClick={(e)=>e.stopPropagation()}>
+                        <div className="reviews-modal-header">
+                            <h3>Reviews</h3>
+                            <button className="close" onClick={()=>setShowReviewsModal(false)}>✕</button>
+                        </div>
+                        <div className="reviews-modal-body">
+                            <Reviews gigId={id} ownerId={data.userId} key={`modal-${id}`} />
+                        </div>
                     </div>
                 </div>
             )}

@@ -1,6 +1,6 @@
 import createError from '../utils/createError.js';
 import Message from '../models/message.model.js';
-import Conversation from '../models/message.model.js'
+import Conversation from '../models/conversation.model.js'
 export const createMessage = async(req, res, next) => {
     const newMessage = new Message({
         conversationId: req.body.conversationId,
@@ -9,14 +9,15 @@ export const createMessage = async(req, res, next) => {
     });
     try {
         const savedMessage=await newMessage.save();
-        await Conversation.findOneAndUpdate({id:req.body.conversationId},{
+        await Conversation.findOneAndUpdate({ id: req.body.conversationId },{
             $set:{
-                readBySeller:req.isSeller,
-                readByBuyer:!req.isSeller,
-                lastMessage:req.body.desc,
+                readBySeller: req.isSeller ? true : false,
+                readByBuyer: req.isSeller ? false : true,
+                lastMessage: req.body.desc,
             }
         },
-        {new:true});res.status(201).send(savedMessage);
+        { new:true });
+        res.status(201).send(savedMessage);
     } catch (err) {
         next(err)
     }
@@ -26,7 +27,7 @@ export const getMessages = async (req, res, next) => {
     try {
         const messages = await Message.find({
             conversationId: req.params.id
-        });
+        }).sort({ createdAt: 1 });
         res.status(200).send(messages);
     } catch (err) {
         next(err)

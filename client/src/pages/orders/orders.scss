@@ -19,8 +19,8 @@
         table { display: none; }
 
         .bid-grid {
-            display: grid;
-            grid-template-columns: repeat(3,minmax(0,1fr));
+            display: flex;
+            flex-wrap: wrap;
             gap: 20px;
         }
 
@@ -37,6 +37,7 @@
                 "msg msg"
                 "actions actions";
             row-gap: 12px;
+            flex: 1 1 calc(33.333% - 20px);
         }
         .bid-head { grid-area: head; display:flex; align-items:center; gap:12px; }
         .avatar { width:44px; height:44px; border-radius:50%; object-fit:cover; border:3px solid #1dbf73; }
@@ -47,13 +48,16 @@
         .badges { display:flex; gap:8px; margin-top:6px; }
         .badge { background:#eefaf5; color:#0f5132; border:1px solid #d7f3e6; border-radius:999px; padding:4px 10px; font-size:12px; font-weight:700; }
         .msg { grid-area: msg; color:#333; line-height:1.6; background:#f8f9fa; border:1px solid #e9ecef; padding:12px; border-radius:12px; }
+        .msg.clamped { display:-webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow:hidden; }
+        .msg.expanded { overflow: visible; }
+        .read-more { background:transparent; border:none; color:#446ee7; font-weight:700; cursor:pointer; padding:0; width:max-content; }
         .actions { grid-area: actions; display:flex; justify-content:flex-end; gap:10px; }
         .approve-btn { background:linear-gradient(135deg,#1dbf73,#19a463); color:#fff; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; }
         .complete-btn { background:linear-gradient(135deg,#28a745,#20c997); color:#fff; border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; }
         .profile-link { color:#446ee7; text-decoration:none; font-weight:700; }
 
-        @media (max-width: 1200px){ .bid-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
-        @media (max-width: 768px){ .bid-grid { grid-template-columns: 1fr; } .container{ width:100%; } }
+        @media (max-width: 1200px){ .bid-card { flex: 1 1 calc(50% - 20px); } }
+        @media (max-width: 768px){ .bid-card { flex: 1 1 100%; } .container{ width:100%; } }
     }
 
     /* Modal styling reused from gig modal */

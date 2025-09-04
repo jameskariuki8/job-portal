@@ -51,7 +51,7 @@ const Register = () => {
         ...user,
         img: url
       });
-      navigate('/')
+      navigate('/login', { state: { fromRegister: true } })
     } catch (error) {
       console.log(error);
       setSubmitError(error?.response?.data?.message || "Registration failed");

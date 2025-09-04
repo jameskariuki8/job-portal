@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './login.scss';
 import newRequest from "../../utils/newRequest";
 import { useLanguage } from "../../contexts/LanguageContext";
@@ -10,6 +10,7 @@ const Login = () => {
     const [error, setError] = useState(null)
 
     const navigate=useNavigate();
+    const location = useLocation();
     const { currentLanguage } = useLanguage();
 
     const handleSubmit = async (e) => {
@@ -17,7 +18,12 @@ const Login = () => {
             e.preventDefault();
             const res=await newRequest.post('/auth/login',{username,password});
             localStorage.setItem("currentUser",JSON.stringify(res.data));
-            navigate('/');
+            const fromRegister = Boolean(location.state && location.state.fromRegister);
+            if (fromRegister) {
+                navigate(`/profile/${res.data._id}`);
+            } else {
+                navigate('/');
+            }
         } catch (err) {
             setError(err.response.data);
         }

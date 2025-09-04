@@ -11,6 +11,56 @@ const Orders = () => {
     const [tab, setTab] = useState('active');
     const [reviewModal, setReviewModal] = useState({ open: false, bid: null, stars: 5, satisfaction: 'excellent', comment: '' });
     const [hoverStars, setHoverStars] = useState(0);
+    
+    const BidCard = ({ bid, isOwner, isCompleted }) => {
+        const [isExpanded, setIsExpanded] = useState(false);
+        const msg = String(bid.message || '');
+        const showToggle = msg.length > 160;
+        return (
+            <div className="bid-card">
+                <div className="bid-head">
+                    <img className="avatar" src={isOwner ? (bid?.bidderProfile?.img || '/images/noavtar.jpeg') : (bid?.gig?.cover || '/images/noavtar.jpeg')} alt={isOwner ? (bid.bidderUsername) : (bid?.gig?.title)}/>
+                    <div className="who">
+                        {isOwner ? (
+                            <a className="name profile-link" href={`/profile/${bid.bidderId}`} target="_blank" rel="noreferrer">{bid.bidderUsername || bid.bidderId}</a>
+                        ) : (
+                            <div className="name">{bid?.gig?.title || bid.gigId}</div>
+                        )}
+                        <div className="badges">
+                            <div className="badge">${bid.amount}</div>
+                            <div className="badge">{bid.days}d</div>
+                            <div className="badge">{bid.status}</div>
+                        </div>
+                    </div>
+                </div>
+                <div className="price">${bid.amount}</div>
+                <div className={isExpanded ? 'msg expanded' : 'msg clamped'}>
+                    {msg}
+                </div>
+                {showToggle && (
+                    <button className="read-more" onClick={() => setIsExpanded(v=>!v)}>
+                        {isExpanded ? 'Read less' : 'Read more'}
+                    </button>
+                )}
+                <div className="actions">
+                    {isOwner ? (
+                        <>
+                            {!isCompleted && bid.status === 'pending' && (<button className="approve-btn" onClick={()=>approveBid(bid._id)}>{getTranslation('orders.approve', currentLanguage)}</button>)}
+                            {!isCompleted && (bid.status === 'in_progress' || bid.status === 'approved') && (<button className="complete-btn" onClick={()=>openComplete(bid)}>{getTranslation('orders.complete', currentLanguage)}</button>)}
+                            <button className="approve-btn" style={{background:'#446ee7'}} onClick={()=>messageUser(bid.bidderId)}>Message</button>
+                        </>
+                    ) : (
+                        <>
+                            {!isCompleted && (bid.status === 'approved' || bid.status === 'in_progress') && (
+                                <span>Working</span>
+                            )}
+                            <button className="approve-btn" style={{background:'#446ee7'}} onClick={()=>messageUser(bid.sellerId)}>Message Owner</button>
+                        </>
+                    )}
+                </div>
+            </div>
+        );
+    };
 
     const { data: ownerActive, isLoading: loadingOwnerActive, error: errorOwnerActive } = useQuery({
         queryKey: ['owner-active-bids'],
@@ -60,27 +110,7 @@ const Orders = () => {
     const renderOwnerList = (list, isCompleted=false) => (
         <div className="bid-grid">
             {(list || []).map(b => (
-                <div key={b._id} className="bid-card">
-                    <div className="bid-head">
-                        <img className="avatar" src={b?.bidderProfile?.img || '/images/noavtar.jpeg'} alt={b.bidderUsername}/>
-                        <div className="who">
-                            <a className="name profile-link" href={`/profile/${b.bidderId}`} target="_blank" rel="noreferrer">{b.bidderUsername || b.bidderId}</a>
-                            <div className="meta" style={{fontWeight:700}}>{b?.gig?.title || b.gigId}</div>
-                            <div className="badges">
-                                <div className="badge">${b.amount}</div>
-                                <div className="badge">{b.days}d</div>
-                                <div className="badge">{b.status}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="price">${b.amount}</div>
-                    <div className="msg">{b.message}</div>
-                    <div className="actions">
-                        {!isCompleted && b.status === 'pending' && (<button className="approve-btn" onClick={()=>approveBid(b._id)}>{getTranslation('orders.approve', currentLanguage)}</button>)}
-                        {!isCompleted && (b.status === 'in_progress' || b.status === 'approved') && (<button className="complete-btn" onClick={()=>openComplete(b)}>{getTranslation('orders.complete', currentLanguage)}</button>)}
-                        <button className="approve-btn" style={{background:'#446ee7'}} onClick={()=>messageUser(b.bidderId)}>Message</button>
-                    </div>
-                </div>
+                <BidCard key={b._id} bid={b} isOwner={true} isCompleted={isCompleted} />
             ))}
         </div>
     );
@@ -88,27 +118,7 @@ const Orders = () => {
     const renderBidderList = (list, isCompleted=false) => (
         <div className="bid-grid">
             {(list || []).filter(b => isCompleted ? b.status==='completed' : b.status!=='completed').map(b => (
-                <div key={b._id} className="bid-card">
-                    <div className="bid-head">
-                        <img className="avatar" src={b?.gig?.cover || '/images/noavtar.jpeg'} alt={b?.gig?.title}/>
-                        <div className="who">
-                            <div className="name">{b?.gig?.title || b.gigId}</div>
-                            <div className="badges">
-                                <div className="badge">${b.amount}</div>
-                                <div className="badge">{b.days}d</div>
-                                <div className="badge">{b.status}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="price">${b.amount}</div>
-                    <div className="msg">{b.message}</div>
-                    <div className="actions">
-                        {!isCompleted && (b.status === 'approved' || b.status === 'in_progress') && (
-                            <span>Working</span>
-                        )}
-                        <button className="approve-btn" style={{background:'#446ee7'}} onClick={()=>messageUser(b.sellerId)}>Message Owner</button>
-                    </div>
-                </div>
+                <BidCard key={b._id} bid={b} isOwner={false} isCompleted={isCompleted} />
             ))}
         </div>
     );

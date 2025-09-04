@@ -4,11 +4,13 @@ import newRequest from "../../utils/newRequest";
 import Review from "../review/Review";
 import "./reviews.scss";
 
-const Reviews = ({ gigId }) => {
+const Reviews = ({ gigId, ownerId }) => {
   const [hoveredStar, setHoveredStar] = useState(0);
   const [selectedStar, setSelectedStar] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const isOwner = currentUser && ownerId && currentUser._id === ownerId;
 
   const queryClient = useQueryClient();
   
@@ -35,6 +37,10 @@ const Reviews = ({ gigId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (isOwner) {
+      alert("You cannot add a review for your own gig");
+      return;
+    }
     
     if (!selectedStar) {
       alert('Please select a rating');
@@ -125,11 +131,15 @@ const Reviews = ({ gigId }) => {
           <p>Share your experience with this service</p>
         </div>
         
+        {isOwner && (
+          <div className="self-review-warning">You cannot add reviews for your own gig.</div>
+        )}
+
         <form className="review-form" onSubmit={handleSubmit}>
           <div className="rating-section">
             <label className="rating-label">Your Rating</label>
             <div className="star-rating-container">
-              {renderStars(0, true, "large")}
+              {renderStars(0, !isOwner, "large")}
               <span className="rating-text">
                 {selectedStar > 0 ? `${selectedStar} star${selectedStar > 1 ? 's' : ''}` : 'Select rating'}
               </span>
@@ -148,6 +158,7 @@ const Reviews = ({ gigId }) => {
               rows="4"
               maxLength="500"
               className="review-textarea"
+              disabled={isOwner}
             />
             <div className="character-count">
               {reviewText.length}/500 characters
@@ -157,7 +168,7 @@ const Reviews = ({ gigId }) => {
           <button 
             type="submit" 
             className="submit-review-btn"
-            disabled={isSubmitting || !selectedStar || !reviewText.trim()}
+            disabled={isOwner || isSubmitting || !selectedStar || !reviewText.trim()}
           >
             {isSubmitting ? (
               <>

@@ -64,6 +64,15 @@
   }
 
   .add-review-section {
+    .self-review-warning {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
     background: linear-gradient(135deg, #f8f9fa, #ffffff);
     border: 2px solid #e9ecef;
     border-radius: 20px;
