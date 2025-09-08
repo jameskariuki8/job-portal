@@ -158,7 +158,7 @@
         /* Price on first row, Delivery below */
         .pricing-row {
           display: grid;
-          grid-template-columns: 1fr;
+          grid-template-columns: 1fr 1fr;
           gap: 16px;
         }
 

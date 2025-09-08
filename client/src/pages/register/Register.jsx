@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './resgister.scss';
 import upload from "../../utils/upload";
 import newRequest from "../../utils/newRequest";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { getTranslation } from "../../translations/translations";
 const Register = () => {
@@ -19,6 +19,13 @@ const Register = () => {
   })
 
   const navigate = useNavigate();
+  const { search } = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    if (params.get('seller') === '1') {
+      setUser(prev => ({ ...prev, isSeller: true }));
+    }
+  }, [search]);
   const { currentLanguage } = useLanguage();
 
   const handlechange = (e) => {
@@ -107,6 +114,7 @@ const Register = () => {
             <label htmlFor="">{getTranslation('register.sellerToggle', currentLanguage)}</label>
             <label className="switch">
               <input type="checkbox"
+                checked={!!user.isSeller}
                 onChange={handleSeller} />
               <span className="slider round"></span>
             </label>
@@ -118,15 +126,7 @@ const Register = () => {
             placeholder="+1 234 567 89"
             onChange={handlechange}
           />
-          <label htmlFor="">{getTranslation('register.description', currentLanguage)}</label>
-          <textarea
-            placeholder={getTranslation('register.descriptionPlaceholder', currentLanguage)}
-            name="desc"
-            id=""
-            cols="30"
-            rows="10"
-            onChange={handlechange}
-          ></textarea>
+          
         </div>
       </form>
     </div>

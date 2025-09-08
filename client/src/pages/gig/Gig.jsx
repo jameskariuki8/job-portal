@@ -57,15 +57,22 @@ const Gig = () => {
     const openBidModal = () => {
         if (!currentUser) return alert('Please login to place a bid');
         if (isOwner) return alert('You cannot bid on your own gig');
-        setBidAmount(data.priceMin);
+        const total = Number(data.pages || 0) * Number(data.pricePerPage || 0);
+        const fallback = Number(data.priceMin || 0) > 0 ? Number(data.priceMin) : 1;
+        setBidAmount(total > 0 ? total : fallback);
         setBidDays(Math.min(1, data.deliveryTime));
         setBidMessage("");
         setShowBidModal(true);
     };
 
     const submitBid = async () => {
-        if (bidAmount < data.priceMin || bidAmount > data.priceMax) {
-            return alert(`Amount must be between $${data.priceMin} and $${data.priceMax}`);
+        // Ensure a positive amount even if total price isn't configured
+        let amountToSend = Number(bidAmount);
+        if (!(amountToSend > 0)) {
+            const total = Number(data.pages || 0) * Number(data.pricePerPage || 0);
+            const fallback = Number(data.priceMin || 0) > 0 ? Number(data.priceMin) : 1;
+            amountToSend = total > 0 ? total : fallback;
+            setBidAmount(amountToSend);
         }
         if (bidDays < 1 || bidDays > data.deliveryTime) {
             return alert(`Days must be between 1 and ${data.deliveryTime}`);
@@ -75,7 +82,7 @@ const Gig = () => {
         }
         setSubmitting(true);
         try {
-            await newRequest.post('/bids', { gigId: id, amount: Number(bidAmount), days: Number(bidDays), message: bidMessage.trim() });
+            await newRequest.post('/bids', { gigId: id, amount: amountToSend, days: Number(bidDays), message: bidMessage.trim() });
             setShowBidModal(false);
             window.location.reload();
         } catch (e) {
@@ -270,14 +277,11 @@ const Gig = () => {
                     <div className="gig-sidebar">
                         <div className="pricing-card">
                             <div className="price-header">
-                                <h3 className="price-title">Price Range</h3>
+                                <h3 className="price-title">Total Price</h3>
                                 <div className="price-amount">
                                     <span className="currency">$</span>
-                                    <span className="amount">{data.priceMin}</span>
-                                    <span className="price-separator">-</span>
-                                    <span className="currency">$</span>
-                                    <span className="amount">{data.priceMax}</span>
-                        </div>
+                                    <span className="amount">{Number(data.pages||0) * Number(data.pricePerPage||0)}</span>
+                                </div>
                             </div>
                             
                             <div className="delivery-info">
@@ -286,8 +290,35 @@ const Gig = () => {
                                     <div className="delivery-details">
                                         <span className="delivery-label">Delivery Time</span>
                                         <span className="delivery-value">{data.deliveryTime} days</span>
-                            </div>
-                        </div>
+                                    </div>
+                                </div>
+                                {data.pricePerPage > 0 && (
+                                    <div className="delivery-item">
+                                        <div className="delivery-icon">📄</div>
+                                        <div className="delivery-details">
+                                            <span className="delivery-label">Price per page</span>
+                                            <span className="delivery-value">${data.pricePerPage}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {data.pages > 0 && (
+                                    <div className="delivery-item">
+                                        <div className="delivery-icon">📑</div>
+                                        <div className="delivery-details">
+                                            <span className="delivery-label">Pages</span>
+                                            <span className="delivery-value">{data.pages}</span>
+                                        </div>
+                                    </div>
+                                )}
+                                {data.discountEnabled && data.discountAmount > 0 && (
+                                    <div className="delivery-item">
+                                        <div className="delivery-icon">🏷️</div>
+                                        <div className="delivery-details">
+                                            <span className="delivery-label">Discount</span>
+                                            <span className="delivery-value">Discount ${data.discountAmount}{data.discountCondition ? ` — ${data.discountCondition}` : ''}</span>
+                                        </div>
+                                    </div>
+                                )}
                                 
                                 {data.status && data.status !== 'available' && (
                                     <div className="delivery-item">
@@ -348,10 +379,7 @@ const Gig = () => {
                 <div className="bid-modal-overlay" onClick={() => setShowBidModal(false)}>
                     <div className="bid-modal" onClick={(e) => e.stopPropagation()}>
                         <h3>Place Your Bid</h3>
-                        <div className="bid-field">
-                            <label>Amount (${data.priceMin}-{data.priceMax})</label>
-                            <input type="number" value={bidAmount} min={data.priceMin} max={data.priceMax} onChange={(e)=>setBidAmount(Number(e.target.value))} />
-                        </div>
+                        {/* Amount is auto-calculated from total price; hidden from the form */}
                         <div className="bid-field">
                             <label>Days (1-{data.deliveryTime})</label>
                             <input type="number" value={bidDays} min={1} max={data.deliveryTime} onChange={(e)=>setBidDays(Number(e.target.value))} />

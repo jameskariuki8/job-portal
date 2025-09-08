@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import './footer.scss';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { getTranslation } from '../../translations/translations';
+import { Link } from 'react-router-dom';
+import { GIG_CATEGORIES } from '../../constants/categories';
 const Footer = () => {
     const { currentLanguage } = useLanguage();
     const [showAllCats, setShowAllCats] = useState(false);
@@ -13,19 +15,19 @@ const Footer = () => {
     ];
     const currentLang = languages.find(lang => lang.code === currentLanguage) || languages[0];
 
-    const categoryKeys = [
-        'home.hero.essay',
-        'home.hero.collegeEssay',
-        'home.hero.coursework',
-        'home.hero.dissertation',
-        'home.hero.researchPaper',
-        'home.hero.termPaper',
-        'home.hero.thesis',
-        'home.hero.caseStudy',
-        'home.hero.literatureReview',
-    ];
-
-    const visible = showAllCats ? categoryKeys : categoryKeys.slice(0, 4);
+    const categoryMap = {
+        'Essay writing service': 'home.hero.essay',
+        'College essay writing service': 'home.hero.collegeEssay',
+        'Coursework writing service': 'home.hero.coursework',
+        'Dissertation writing service': 'home.hero.dissertation',
+        'Research paper writing service': 'home.hero.researchPaper',
+        'Term paper writing service': 'home.hero.termPaper',
+        'Thesis writing service': 'home.hero.thesis',
+        'Case study writing service': 'home.hero.caseStudy',
+        'Literature review writing service': 'home.hero.literatureReview',
+    };
+    const cats = GIG_CATEGORIES;
+    const visibleCats = showAllCats ? cats : cats.slice(0, 6);
 
     return (
         <div className="footer">
@@ -33,10 +35,11 @@ const Footer = () => {
                 <div className="top">
                     <div className="item">
                         <h2>{getTranslation('footer.categories', currentLanguage)}</h2>
-                        {visible.map((key)=> (
-                            <span key={key}>{getTranslation(key, currentLanguage)}</span>
+                        {visibleCats.map((cat)=> (
+                            <Link key={cat} to={`/gigs?cat=${encodeURIComponent(cat)}`} className="footer-link">
+                                {getTranslation(categoryMap[cat] || cat, currentLanguage)}
+                            </Link>
                         ))}
-                        {!showAllCats && <span>Personal statement writing service</span> /* keep one more static if needed */}
                         <button style={{marginTop:8}} className="readmore" onClick={()=>setShowAllCats(!showAllCats)}>
                             {showAllCats ? 'Show less' : 'Read more'}
                         </button>
@@ -53,13 +56,7 @@ const Footer = () => {
                         <span>{getTranslation('footer.trust', currentLanguage)}</span>
                         <span>{getTranslation('footer.guides', currentLanguage)}</span>
                     </div>
-                    <div className="item">
-                        <h2>{getTranslation('footer.community', currentLanguage)}</h2>
-                        <span>{getTranslation('footer.success', currentLanguage)}</span>
-                        <span>{getTranslation('footer.blog', currentLanguage)}</span>
-                        <span>{getTranslation('footer.forum', currentLanguage)}</span>
-                        <span>{getTranslation('footer.events', currentLanguage)}</span>
-                    </div>
+                    {/* Community section removed per request */}
                     <div className="item">
                         <h2>{getTranslation('footer.more', currentLanguage)}</h2>
                         <span>{getTranslation('footer.enterprise', currentLanguage)}</span>

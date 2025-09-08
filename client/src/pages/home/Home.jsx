@@ -22,6 +22,18 @@ const Home = () => {
         { value: 'Literature review writing service', key: 'home.hero.literatureReview', icon: '📖' },
     ];
     const duplicated = [...academicServices, ...academicServices];
+    const categoryImageMap = {
+        'Essay writing service': '/images/categories/essay.jpg',
+        'College essay writing service': '/images/categories/college-essay.jpg',
+        'Coursework writing service': '/images/categories/coursework.jpg',
+        'Dissertation writing service': '/images/categories/dissertation.jpg',
+        'Custom essay writing service': '/images/categories/custom-essay.jpg',
+        'Research paper writing service': '/images/categories/research-paper.jpg',
+        'Term paper writing service': '/images/categories/term-paper.jpg',
+        'Thesis writing service': '/images/categories/thesis.jpg',
+        'Case study writing service': '/images/categories/case-study.jpg',
+        'Literature review writing service': '/images/categories/literature-review.jpg',
+    };
     return (
         <div className="home">
             <Featured></Featured>
@@ -30,29 +42,37 @@ const Home = () => {
                 <div className="container">
                     <div className="item">
                         <h1>{getTranslation('home.features.title1', currentLanguage)}</h1>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.features.budgetTitle', currentLanguage)}
+                        <div className="feature-points">
+                            {[
+                                {title:'Academic writing, perfected', desc:'From essays to theses, get polished, original work crafted by vetted academic writers and editors.'},
+                                {title:'Transparent pricing', desc:'Only pay for the pages you need. Clear timelines, no surprises.'},
+                                {title:'On-time, every time', desc:'Meet your deadline with reliable delivery and real-time updates.'},
+                            ].map((pt, i)=> (
+                                <div className="feature-point" key={i}>
+                                    <div className="icon-wrap"><img src="/images/greencheck.png" alt="check" /></div>
+                                    <div className="content">
+                                        <h3>{pt.title}</h3>
+                                        <p>{pt.desc}</p>
                         </div>
-                        <p>{getTranslation('home.features.budgetDesc', currentLanguage)}</p>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.features.qualityTitle', currentLanguage)}
                         </div>
-                        <p>{getTranslation('home.features.qualityDesc', currentLanguage)}</p>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.features.payTitle', currentLanguage)}
+                            ))}
                         </div>
-                        <p>{getTranslation('home.features.payDesc', currentLanguage)}</p>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.features.supportTitle', currentLanguage)}
                         </div>
-                        <p>{getTranslation('home.features.supportDesc', currentLanguage)}</p>
+                    <div className="academics-grid">
+                        {[
+                            {icon:'📚', title:'Subject‑matter experts', desc:'Writers across STEM, humanities, business, and social sciences.'},
+                            {icon:'🧭', title:'Proper structure', desc:'Crisp thesis statements, strong arguments, and logical flow.'},
+                            {icon:'🧾', title:'Citations & formatting', desc:'APA, MLA, Chicago, Harvard—meticulously followed.'},
+                            {icon:'🔍', title:'Originality guaranteed', desc:'Plagiarism‑free writing with similarity checks on request.'},
+                            {icon:'🛡️', title:'Confidential & secure', desc:'Private, encrypted communication and file handling.'},
+                            {icon:'✅', title:'Revisions included', desc:'Thoughtful edits to match your rubric and feedback.'},
+                        ].map((c, i)=> (
+                            <div className="academic-card" key={i}>
+                                <div className="icon">{c.icon}</div>
+                                <div className="card-title">{c.title}</div>
+                                <div className="card-desc">{c.desc}</div>
                     </div>
-                    <div className="item">
-                        <video src="/images/video.mp4" controls width='100%'></video>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -68,8 +88,18 @@ const Home = () => {
                                     key={`${svc.value}-${idx}`}
                                     onClick={() => navigate(`/gigs?cat=${encodeURIComponent(svc.value)}`)}
                                 >
-                                    <div className="card-icon">{svc.icon}</div>
-                                    <div className="card-label">{getTranslation(svc.key, currentLanguage)}</div>
+                                    <div className="card-header">
+                                        <div className="card-title">{getTranslation(svc.key, currentLanguage)}</div>
+                                    </div>
+                                    <div className="card-media">
+                                        <img
+                                            className="card-image"
+                                            src={categoryImageMap[svc.value]}
+                                            alt={svc.value}
+                                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                        />
+                                        <div className="media-illustration">{svc.icon}</div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -77,44 +107,45 @@ const Home = () => {
                 </div>
             </div>
             
-            <div className="features dark">
-                <div className="container">
-                    <div className="item">
-                        <h1>Job Portal <em><span style={{ fontWeight: '300' }}>{getTranslation('home.business.mainTitle', currentLanguage)}</span></em></h1>
-                        <h1>{getTranslation('home.business.subtitle', currentLanguage)}</h1>
-                        <p>{getTranslation('home.business.description', currentLanguage)}</p>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.business.talent', currentLanguage)}
-                        </div>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.business.account', currentLanguage)}
-                        </div>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.business.team', currentLanguage)}
-                        </div>
-                        <div className="title">
-                            <img src="/images/check.png" alt="check" />
-                            {getTranslation('home.business.payment', currentLanguage)}
-                        </div>
-                        <button>{getTranslation('home.business.cta', currentLanguage)}</button>
-                    </div>
-                    <div className="item">
-                        <img src="images/business-desktop-870-x1.webp" alt="imagea" />
-                    </div>
-                </div>
-            </div>
             
-            <div className="last_hero">
-                <div className="items">
-                    <div className="left">
-                        <h1>{getTranslation('home.last.titlePrefix', currentLanguage)} <em><span className="last_hero_em">{getTranslation('home.last.titleEm', currentLanguage)}</span></em></h1>
-                        <button onClick={e => navigate(`/register`)}>{getTranslation('home.last.cta', currentLanguage)}</button>
+            
+            <div className="reviews">
+                <div className="container">
+                    <h2>Client reviews</h2>
+                    <div className="cards">
+                        {[{
+                            quote: 'I have been working with our freelancers for several years now. Exceptionally talented, professional, and highly productive — the breadth and depth of talent keeps impressing us.',
+                            author: 'Ian Stokes-Rees',
+                            role: 'Partner',
+                            company: 'BCG X',
+                            logo: '/images/logomaker.webp'
+                        }, {
+                            quote: 'Job Portal is my go-to source to find high‑quality talent I can’t find elsewhere. They always deliver.',
+                            author: 'Tess Caputo',
+                            role: 'Chief Operations Officer',
+                            company: 'Zoetis',
+                            logo: '/images/greencheck.png'
+                        }, {
+                            quote: 'Under tight deadlines, we received clear, well‑researched academic writing and meticulous citations. The editors were responsive and ensured the paper met our rubric and formatting requirements.',
+                            author: 'Dr. Conor Kenney',
+                            role: 'Program Coordinator, Graduate Studies',
+                            company: 'School of Social Sciences',
+                            logo: '/images/check.png'
+                        }].map((r, i) => (
+                            <div className="review-card" key={i}>
+                                <div className="quote-mark">“</div>
+                                <h3 className="title">{i===0 ? 'I have been working with Job Portal…' : i===1 ? 'Job Portal is my go‑to source' : 'Academic writing done right'}</h3>
+                                <p className="text">{r.quote}</p>
+                                <div className="stars" aria-label="rating">★★★★★</div>
+                                <div className="person">
+                                    <div className="who">
+                                        <div className="name">{r.author}</div>
+                                        <div className="role">{r.role}</div>
+                                    </div>
+                                    <img className="logo" src={r.logo} alt={r.company} />
+                                </div>
                     </div>
-                    <div className="right">
-                        <img src="/images/last_hero.webp" alt="" />
+                        ))}
                     </div>
                 </div>
             </div>
@@ -123,3 +154,4 @@ const Home = () => {
 }
 
 export default Home;
+

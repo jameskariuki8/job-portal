@@ -9,6 +9,7 @@ const Orders = () => {
     const { currentLanguage } = useLanguage();
 
     const [tab, setTab] = useState('active');
+    const [selectedGigId, setSelectedGigId] = useState('all');
     const [reviewModal, setReviewModal] = useState({ open: false, bid: null, stars: 5, satisfaction: 'excellent', comment: '' });
     const [hoverStars, setHoverStars] = useState(0);
     
@@ -126,15 +127,43 @@ const Orders = () => {
     if (currentUser?.isSeller) {
         if (loadingOwnerActive || loadingOwnerCompleted) return <div className="orders"><div className="container"><div className="title">{getTranslation('orders.loading', currentLanguage)}</div></div></div>;
         if (errorOwnerActive || errorOwnerCompleted) return <div className="orders"><div className="container"><div className="title">{getTranslation('orders.error', currentLanguage)}</div></div></div>;
+        const activeList = ownerActive || [];
+        const completedList = ownerCompleted || [];
+        const list = tab==='active' ? activeList : completedList;
+        const gigEntries = Array.from(new Map(list.map(b => [String(b.gigId || b?.gig?._id || b?.gigId), {
+            id: String(b.gigId || b?.gig?._id || b?.gigId),
+            title: b?.gig?.title || b.gigTitle || 'Untitled Gig',
+            cover: b?.gig?.cover,
+        }])).values());
+        const visible = selectedGigId==='all' ? list : list.filter(b => String(b.gigId || b?.gig?._id || b?.gigId) === selectedGigId);
+
         return (
             <div className="orders">
-                <div className="container">
-                    <div className="title"><h1>{getTranslation('orders.title.bids', currentLanguage)}</h1></div>
-                    <div className="tabs" style={{display:'flex', gap:12, marginBottom:16}}>
-                        <button className={tab==='active'?'tab active':'tab'} onClick={()=>setTab('active')}>Active</button>
-                        <button className={tab==='completed'?'tab active':'tab'} onClick={()=>setTab('completed')}>Completed</button>
-                    </div>
-                    {tab==='active' ? renderOwnerList(ownerActive,false) : renderOwnerList(ownerCompleted,true)}
+                <div className="container split">
+                    <aside className="gig-sidebar">
+                        <div className="sidebar-head">
+                            <h3>Your Gigs</h3>
+                        </div>
+                        <button className={selectedGigId==='all' ? 'gig-pill active' : 'gig-pill'} onClick={()=>setSelectedGigId('all')}>All gigs</button>
+                        {gigEntries.map(g => (
+                            <button key={g.id} className={selectedGigId===g.id ? 'gig-pill active' : 'gig-pill'} onClick={()=>setSelectedGigId(g.id)}>
+                                {g.cover && <img src={g.cover} alt="" />}
+                                <span>{g.title}</span>
+                            </button>
+                        ))}
+                        <div className="tabs sidebar-tabs">
+                            <button className={tab==='active'?'tab active':'tab'} onClick={()=>setTab('active')}>Active</button>
+                            <button className={tab==='completed'?'tab active':'tab'} onClick={()=>setTab('completed')}>Completed</button>
+                        </div>
+                    </aside>
+                    <main className="bids-main">
+                        <div className="title"><h1>{getTranslation('orders.title.bids', currentLanguage)}</h1></div>
+                        <div className="bid-grid">
+                            {visible.map(b => (
+                                <BidCard key={b._id} bid={b} isOwner={true} isCompleted={tab==='completed'} />
+                            ))}
+                        </div>
+                    </main>
                 </div>
 
                 {reviewModal.open && (

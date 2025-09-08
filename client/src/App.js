@@ -2,6 +2,7 @@ import React from 'react';
 import './App.scss';
 import Footer from './components/Footer/Footer';
 import Navbar from './components/Navbar/Navbar';
+import ScrollToTop from './components/ScrollToTop';
 import Add from './pages/add/Add';
 import Message from './pages/message/Message';
 import Messages from './pages/messages/Messages';
@@ -12,19 +13,14 @@ import Gigs from "./pages/gigs/Gigs";
 import Home from './pages/home/Home';
 import Pay from './pages/pay/Pay';
 import Success from './pages/success/Success';
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Outlet,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
 import Login from './pages/login/Login';
 import Register from './pages/register/Register';
 import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
-import BecomeSeller from './components/becomeSeller/BecomeSeller';
-import BecomeSeller2 from './components/becomeSeller2/BecomeSeller2';
+// Removed: BecomeSeller and BecomeSeller2 (redirecting to Register)
 import Profile from './pages/profile/Profile';
 import { LanguageProvider } from './contexts/LanguageContext';
 import HowItWorks from './pages/howItWorks/HowItWorks';
@@ -36,6 +32,7 @@ function App() {
       <QueryClientProvider client={queryClient} key={55}>
         <LanguageProvider>
           <div className='app'>
+            <ScrollToTop />
             <Navbar key={3} />
             <Outlet key={5454} />
             <hr></hr>
@@ -104,11 +101,11 @@ function App() {
         },
         {
           path: "/becomeSeller",
-          element: <BecomeSeller />
+          element: <Navigate to="/register?seller=1" replace />
         },
         {
           path: "/becomeSeller2",
-          element: <BecomeSeller2 />
+          element: <Navigate to="/register?seller=1" replace />
         },
         {
           path: "/how-it-works",

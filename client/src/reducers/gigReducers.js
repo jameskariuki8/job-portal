@@ -8,6 +8,12 @@ export const INITIAL_STATE = {
     deliveryTime: 0,
     priceMin: 0,
     priceMax: 0,
+    pages: 1,
+    pricePerPage: 0,
+    totalPrice: 0,
+    discountEnabled: false,
+    discountAmount: 0,
+    discountCondition: "",
   };
 
   export const gigReducer=(state,action)=>{

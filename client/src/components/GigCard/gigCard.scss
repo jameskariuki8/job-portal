@@ -85,9 +85,22 @@
         }
 
         .price {
-            h2 { color: #1a1a1a; font-size: 18px; font-weight: 700; text-align: end; }
-            span { color: #999; font-size: 11px; }
+            display:flex; flex-direction:column; align-items:flex-end; gap:4px;
+            .total-price { font-weight:800; color:#1a1a1a; }
+            .per-page { color:#6c757d; font-size:12px; }
+            .no-discount { color:#adb5bd; font-size:12px; }
+            .discount-wrap { position:relative; }
+            .discount-btn { background:#e6f4ea; color:#137333; border:1px solid #c3e7ca; padding:4px 8px; border-radius:999px; font-size:12px; cursor:pointer; font-weight:700; }
+            .discount-wrap:hover .discount-tooltip { opacity:1; transform: translateY(0); pointer-events:auto; }
+            .discount-tooltip { position:absolute; right:0; bottom:28px; background: linear-gradient(135deg,#e6fff3,#e9f7ff); border:1px solid #b3f0d0; border-radius:10px; padding:12px 14px; width:240px; box-shadow:0 14px 34px rgba(0,0,0,0.16); opacity:0; transform: translateY(-6px); transition: opacity .18s ease, transform .18s ease; pointer-events:none; z-index: 5; }
+            .discount-tooltip::before { content:""; position:absolute; right:14px; bottom:-7px; width:12px; height:12px; background:inherit; border-right:1px solid #b3f0d0; border-bottom:1px solid #b3f0d0; transform: rotate(45deg); }
+            .discount-tooltip .tooltip-title { font-weight:900; margin-bottom:6px; color:#0f5132; text-transform:uppercase; letter-spacing:.5px; }
+            .discount-tooltip .tooltip-body { color:#0b4f71; font-weight:600; }
         }
+
+        .like-btn { display:flex; align-items:center; gap:6px; background:transparent; border:none; cursor:pointer; }
+        .like-btn .likes-count { font-size:12px; color:#6c757d; }
+        .like-btn.liked img { filter: invert(16%) sepia(95%) saturate(7459%) hue-rotate(1deg) brightness(90%) contrast(120%); }
         
         .status-badge {
             .status {

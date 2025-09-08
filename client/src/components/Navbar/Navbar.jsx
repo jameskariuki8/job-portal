@@ -76,11 +76,11 @@ const Navbar = () => {
                 </div>}
                 <div className="links">
                     <span onClick={()=>navigate('/how-it-works')}>How it works</span>
-                    <span onClick={()=>navigate('/becomeseller')}>{getTranslation('nav.freelance', currentLanguage)}</span>
+                    <span onClick={()=>navigate('/gigs')}>{getTranslation('nav.freelance', currentLanguage)}</span>
                     <LanguageSwitcher />
                     <Link to='/login' className='link' key={333}><span>{getTranslation('nav.signIn', currentLanguage)}</span></Link>
 
-                    {!current_user?.isSeller && <span onClick={e => navigate('/becomeSeller')}>{getTranslation('nav.becomeSeller', currentLanguage)}</span>}
+                    {!current_user?.isSeller && <span onClick={e => navigate('/register?seller=1')}>{getTranslation('nav.becomeSeller', currentLanguage)}</span>}
                     {!current_user && <button onClick={e => navigate(`/register`)}>{getTranslation('nav.join', currentLanguage)}</button>}
                     {
                         current_user && (

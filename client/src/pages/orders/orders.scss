@@ -24,6 +24,15 @@
             gap: 20px;
         }
 
+        &.split { display:grid; grid-template-columns: 300px 1fr; gap: 20px; }
+        .gig-sidebar { background:#fff; border:1px solid #e9ecef; border-radius:16px; padding:12px; box-shadow:0 10px 24px rgba(0,0,0,0.06); height:max-content; position:sticky; top:20px; }
+        .gig-sidebar .sidebar-head { padding:8px 6px 12px 6px; border-bottom:1px solid #f1f3f5; margin-bottom:10px; }
+        .gig-pill { width:100%; display:flex; align-items:center; gap:10px; padding:8px 10px; border:none; background:#f8f9fa; border-radius:10px; cursor:pointer; margin-bottom:8px; text-align:left; font-weight:600; color:#333; }
+        .gig-pill img { width:28px; height:20px; object-fit:cover; border-radius:4px; border:1px solid #e9ecef; }
+        .gig-pill.active { background:#eefaf5; color:#0f5132; outline:2px solid #d7f3e6; }
+        .sidebar-tabs { margin-top:8px; display:flex; gap:8px; justify-content:space-between; }
+        .bids-main { min-height: 400px; }
+
         .bid-card {
             background: #fff;
             border-radius: 16px;
@@ -57,6 +66,7 @@
         .profile-link { color:#446ee7; text-decoration:none; font-weight:700; }
 
         @media (max-width: 1200px){ .bid-card { flex: 1 1 calc(50% - 20px); } }
+        @media (max-width: 900px){ .container.split { grid-template-columns: 1fr; } .gig-sidebar { position: static; } }
         @media (max-width: 768px){ .bid-card { flex: 1 1 100%; } .container{ width:100%; } }
     }
 

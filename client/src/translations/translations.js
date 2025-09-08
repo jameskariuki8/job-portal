@@ -11,7 +11,7 @@ export const translations = {
     'nav.search': 'Search',
     'nav.workspace': 'Job Portal Workspace',
     'nav.becomeSeller': 'Become a Seller',
-    'nav.freelance': 'Freelance Business',
+    'nav.freelance': 'All Gigs',
     'nav.explore': 'Explore',
     'nav.discover': 'Discover',
     'nav.guides': 'Guides',

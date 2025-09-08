@@ -51,6 +51,36 @@ const GigSchema = new Schema({
     type:Number,
     require:true
   },
+  pages:{
+    type:Number,
+    required:false,
+    default:1,
+  },
+  pricePerPage:{
+    type:Number,
+    required:false,
+    default:0,
+  },
+  discountEnabled:{
+    type:Boolean,
+    required:false,
+    default:false,
+  },
+  discountAmount:{
+    type:Number,
+    required:false,
+    default:0,
+  },
+  discountCondition:{
+    type:String,
+    required:false,
+    default:"",
+  },
+  likedBy:{
+    type:[String],
+    required:false,
+    default:[],
+  },
   sales:{
     type:Number,
     default:0,

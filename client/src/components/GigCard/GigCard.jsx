@@ -3,6 +3,7 @@ import './gigCard.scss'
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
+import getCurrentUser from "../../utils/getCurrentUser";
 
 const GigCard = ({ item }) => {
     const { isLoading, error, data } = useQuery({
@@ -14,6 +15,10 @@ const GigCard = ({ item }) => {
                 })
             })
     const [expanded, setExpanded] = useState(false);
+    const currentUser = getCurrentUser();
+    const initialLiked = Array.isArray(item.likedBy) && currentUser ? item.likedBy.includes(currentUser._id) : false;
+    const [liked, setLiked] = useState(initialLiked);
+    const [likesCount, setLikesCount] = useState(Array.isArray(item.likedBy) ? item.likedBy.length : 0);
     const descText = item.desc || '';
     const maxChars = 120;
     const showToggle = descText.length > maxChars;
@@ -49,10 +54,48 @@ const GigCard = ({ item }) => {
                 </div>
                 <hr />
                 <div className="details">
-                    <img src="/images/heart.png" alt="" />
+                    <button
+                        className={`like-btn${liked ? ' liked' : ''}`}
+                        onClick={async (e)=>{
+                            e.preventDefault();
+                            e.stopPropagation();
+                            try {
+                                const res = await newRequest.post(`/gigs/${item._id}/like`);
+                                setLiked(Boolean(res.data?.liked));
+                                setLikesCount(Number(res.data?.likes || 0));
+                            } catch(err){
+                                console.log(err);
+                            }
+                        }}
+                        title="Like"
+                    >
+                        <img
+                            src="/images/heart.png"
+                            alt="like"
+                            style={liked ? { filter: 'invert(16%) sepia(95%) saturate(7459%) hue-rotate(1deg) brightness(90%) contrast(120%)' } : undefined}
+                        />
+                        <span className="likes-count">{likesCount}</span>
+                    </button>
                     <div className="price">
-                        <span>STARTING AT</span>
-                        <h2>$ {item.priceMin} - ${item.priceMax}</h2>
+                        {(Number(item.pages||0) * Number(item.pricePerPage||0)) > 0 && (
+                            <div className="total-price">Total: ${Number(item.pages||0) * Number(item.pricePerPage||0)}</div>
+                        )}
+                        {item.pricePerPage > 0 && item.pages > 0 && (
+                            <div className="per-page">${item.pricePerPage}/page · {item.pages} pages</div>
+                        )}
+                        {item.discountEnabled && item.discountAmount > 0 ? (
+                            <div className="discount-wrap">
+                                <button className="discount-btn" title={`Discount: $${item.discountAmount}${item.discountCondition ? ` — ${item.discountCondition}` : ''}`}>
+                                    Discount
+                                </button>
+                                <div className="discount-tooltip">
+                                    <div className="tooltip-title">Discount</div>
+                                    <div className="tooltip-body">${item.discountAmount}{item.discountCondition ? ` — ${item.discountCondition}` : ''}</div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="no-discount">No discount</div>
+                        )}
                     </div>
                     {item.status && item.status !== 'available' && (
                         <div className="status-badge">

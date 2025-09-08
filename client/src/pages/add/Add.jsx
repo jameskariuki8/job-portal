@@ -48,7 +48,19 @@ const Add = () => {
     });
 
     const handlechange = (e) => {
-        dispatch({ type: "CHANGE_INPUT", payload: { name: e.target.name, value: e.target.value } })
+        const name = e.target.name;
+        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        dispatch({ type: "CHANGE_INPUT", payload: { name, value } })
+    }
+
+    const handleNumericChange = (name, raw) => {
+        // Allow only digits and optional decimal point with up to 2 decimals
+        const cleaned = String(raw).replace(/[^0-9.]/g, '');
+        const parts = cleaned.split('.');
+        const normalized = parts.length > 1
+            ? `${parts[0]}.${parts.slice(1).join('').slice(0,2)}`
+            : parts[0];
+        dispatch({ type: "CHANGE_INPUT", payload: { name, value: normalized } });
     }
 
     const handleupload = async () => {
@@ -63,9 +75,9 @@ const Add = () => {
     const handlesubmit=(e)=>{
         e.preventDefault();
         if (!state.cat) { alert(getTranslation('add.alert.categoryRequired', currentLanguage)); return; }
-        if (!state.title || !state.desc || !state.priceMin || !state.priceMax || !state.deliveryTime) { alert(getTranslation('add.alert.requiredFields', currentLanguage)); return; }
-        if (parseFloat(state.priceMin) >= parseFloat(state.priceMax)) { alert(getTranslation('add.alert.priceRange', currentLanguage)); return; }
+        if (!state.title || !state.desc || !state.deliveryTime) { alert(getTranslation('add.alert.requiredFields', currentLanguage)); return; }
         const payload = { ...state };
+        payload.totalPrice = Number(state.pages || 0) * Number(state.pricePerPage || 0);
         if (editId) {
             updateMutation.mutate(payload);
         } else {
@@ -196,39 +208,32 @@ const Add = () => {
                             
                             <div className="pricing-row">
                                 <div className="form-group">
-                                    <label htmlFor="priceMin">{getTranslation('add.pricing.priceLabel', currentLanguage)} *</label>
+                                    <label htmlFor="pages">Number of pages *</label>
+                                    <input type="number" id="pages" name="pages" min="1" value={state.pages} onChange={handlechange} />
+                                    <small>Specify how many pages are required.</small>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="pricePerPage">Price per page (USD) *</label>
                                     <div className="price-range-input">
                                         <div className="price-input">
                                             <span className="dollar-sign">$</span>
-                                            <input 
-                                                type="number" 
-                                                id="priceMin"
-                                                onChange={handlechange} 
-                                                name="priceMin"
-                                                placeholder={getTranslation('add.pricing.minPlaceholder', currentLanguage)}
-                                                step="0.01"
-                                                min="0"
-                                                value={state.priceMin}
-                                                required
-                                            />
-                                        </div>
-                                        <span className="price-separator">-</span>
-                                        <div className="price-input">
-                                            <span className="dollar-sign">$</span>
-                                            <input 
-                                                type="number" 
-                                                id="priceMax"
-                                                onChange={handlechange} 
-                                                name="priceMax"
-                                                placeholder={getTranslation('add.pricing.maxPlaceholder', currentLanguage)}
-                                                step="0.01"
-                                                min="0"
-                                                value={state.priceMax}
-                                                required
+                                            <input
+                                                type="text"
+                                                inputMode="decimal"
+                                                id="pricePerPage"
+                                                name="pricePerPage"
+                                                value={state.pricePerPage}
+                                                onChange={(e)=>handleNumericChange('pricePerPage', e.target.value)}
                                             />
                                         </div>
                                     </div>
-                                    <small>{getTranslation('add.pricing.priceHelp', currentLanguage)}</small>
+                                    <small>Example: 1 page = $3. Total updates automatically.</small>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="totalPrice">Total price (auto)</label>
+                                    <input type="number" id="totalPrice" name="totalPrice" value={Number(state.pages||0) * Number(state.pricePerPage||0)} readOnly />
                                 </div>
                                 
                                 <div className="form-group">
@@ -247,6 +252,35 @@ const Add = () => {
                                     </div>
                                     <small>{getTranslation('add.pricing.deliveryHelp', currentLanguage)}</small>
                                 </div>
+                            </div>
+
+                            <div className="form-section" style={{marginTop:16}}>
+                                <div className="section-header">
+                                    <div className="section-icon">🏷️</div>
+                                    <h2>Optional Discount</h2>
+                                    <p>Offer a discount for faster completion or special conditions.</p>
+                                </div>
+                                <div className="form-group" style={{display:'flex', alignItems:'center', gap:12}}>
+                                    <input type="checkbox" id="discountEnabled" name="discountEnabled" checked={!!state.discountEnabled} onChange={handlechange} />
+                                    <label htmlFor="discountEnabled" style={{marginBottom:0}}>Enable discount</label>
+                                </div>
+                                {state.discountEnabled && (
+                                    <>
+                                        <div className="form-group">
+                                            <label htmlFor="discountAmount">Discount amount (USD)</label>
+                                            <div className="price-range-input">
+                                                <div className="price-input">
+                                                    <span className="dollar-sign">$</span>
+                                                    <input type="number" id="discountAmount" name="discountAmount" min="0" step="0.01" value={state.discountAmount} onChange={handlechange} />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="discountCondition">Discount condition</label>
+                                            <input type="text" id="discountCondition" name="discountCondition" placeholder="e.g., $4 off if delivered in half the estimated days" value={state.discountCondition} onChange={handlechange} />
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
 

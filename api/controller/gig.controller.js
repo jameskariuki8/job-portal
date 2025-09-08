@@ -109,3 +109,22 @@ export const updateGigStatus = async (req, res, next) => {
     next(err);
   }
 };
+
+export const toggleLikeGig = async (req, res, next) => {
+  try {
+    const gigId = req.params.id;
+    const userId = req.userId;
+    const gig = await Gig.findById(gigId);
+    if (!gig) return next(createError(404, 'Gig not found'));
+    const idx = gig.likedBy.findIndex(id => String(id) === String(userId));
+    if (idx >= 0) {
+      gig.likedBy.splice(idx, 1);
+    } else {
+      gig.likedBy.push(String(userId));
+    }
+    const saved = await gig.save();
+    res.status(200).json({ liked: idx < 0, likes: saved.likedBy.length });
+  } catch (err) {
+    next(err);
+  }
+}

@@ -16,9 +16,16 @@ export const createBid = async (req, res, next) => {
       return next(createError(400, 'Bidding is closed for this gig'));
     }
 
-    // Validate ranges
-    if (amount < gig.priceMin || amount > gig.priceMax) {
-      return next(createError(400, `Amount must be between ${gig.priceMin} and ${gig.priceMax}`));
+    // Validate amount
+    const hasRange = Number(gig.priceMin) > 0 && Number(gig.priceMax) > 0 && Number(gig.priceMax) >= Number(gig.priceMin);
+    if (hasRange) {
+      if (Number(amount) < Number(gig.priceMin) || Number(amount) > Number(gig.priceMax)) {
+        return next(createError(400, `Amount must be between ${gig.priceMin} and ${gig.priceMax}`));
+      }
+    } else {
+      if (!(Number(amount) > 0)) {
+        return next(createError(400, 'Amount must be greater than 0'));
+      }
     }
     if (days < 1 || days > gig.deliveryTime) {
       return next(createError(400, `Days must be between 1 and ${gig.deliveryTime}`));

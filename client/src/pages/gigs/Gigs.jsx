@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import './gigs.scss';
 import GigCard from '../../components/GigCard/GigCard'
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import { useLocation } from "react-router-dom";
 import { GIG_CATEGORIES, getCategoryIcon } from "../../constants/categories";
+import getCurrentUser from "../../utils/getCurrentUser";
 
 const Gigs = () => {
     const [open, setopen] = useState(false);
@@ -40,6 +41,24 @@ const Gigs = () => {
                 });
         }
     });
+    const currentUser = getCurrentUser();
+    const { data: myBids } = useQuery({
+        queryKey: ['my-bids-all'],
+        queryFn: () => newRequest.get('/bids/me').then(r => r.data),
+        enabled: !!currentUser && !currentUser.isSeller,
+        retry: false,
+    });
+
+    const filteredData = useMemo(() => {
+        if (!data) return [];
+        if (!myBids || currentUser?.isSeller) return data;
+        const excludedGigIds = new Set(
+            myBids
+                .filter(b => b.status === 'approved' || b.status === 'in_progress')
+                .map(b => String(b.gigId))
+        );
+        return data.filter(g => !excludedGigIds.has(String(g._id)));
+    }, [data, myBids, currentUser]);
     
     useEffect(() => {
         refetch();
@@ -93,13 +112,13 @@ const Gigs = () => {
                         ? <div className="loader"></div>
                         : error
                             ? <h4 style={{color:"red"}}>Something Gone Wrong</h4>
-                            : data.length === 0 ?
+                            : filteredData.length === 0 ?
                                 <div className="empty-state">
                                   <div className="icon">🔎</div>
                                   <h3>Oops, no jobs at the moment</h3>
                                   <p>Come again later or try another category.</p>
                                 </div> :
-                                data.map((gig) => <GigCard key={gig._id} item={gig} />)
+                                filteredData.map((gig) => <GigCard key={gig._id} item={gig} />)
                     }
                 </div>
             </div>
