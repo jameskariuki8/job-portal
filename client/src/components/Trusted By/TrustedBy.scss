@@ -12,10 +12,17 @@
         gap: 20px;
         color: lightgray;
         font-weight: 500;
+        padding: 0 16px;
+        flex-wrap: wrap;
     }
 
     img {
         height: 60px;
         object-fit: contain;
     }
+}
+
+@media (max-width: 900px) {
+    .trustedBy { height: auto; padding: 16px 0; }
+    .trustedBy img { height: 42px; }
 }

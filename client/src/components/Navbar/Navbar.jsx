@@ -10,6 +10,7 @@ const Navbar = () => {
     const [active, setactive] = useState(false);
     const [active1, setactive1] = useState(false);
     const [open, setopen] = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const { pathname } = useLocation();
     const { currentLanguage } = useLanguage();
     const isActive = () => {
@@ -43,6 +44,7 @@ const Navbar = () => {
     const [input, setinput] = useState("");
     const handlesubmit = () => {
         navigate(`/gigs?search=${encodeURIComponent(input)}`);
+        setMobileOpen(false);
     }
 
     const categoryKeyMap = {
@@ -63,25 +65,32 @@ const Navbar = () => {
         <div className={active || pathname !== "/" ? "navbar active" : "navbar "}>
             <div className="container">
                 <div className="logo">
-                    <Link to='/' className='link'>
+                    <Link to='/' className='link' onClick={()=>setMobileOpen(false)}>
                         <span className='log'>Job Portal</span>
                     </Link>
                     <span className='dot'>.</span>
                 </div>
                 {active  && <div className="navbarsearch">
-                    <input type="text" placeholder={getTranslation('home.hero.search', currentLanguage)} onChange={e => setinput(e.target.value)} />
+                    <input type="text" placeholder={getTranslation('home.hero.search', currentLanguage)} onChange={e => setinput(e.target.value)} onKeyDown={(e)=>{ if(e.key==='Enter'){handlesubmit()} }} />
                     <div className="search">
                         <img src="/images/search.png" alt="" onClick={handlesubmit} />
                     </div>
                 </div>}
-                <div className="links">
-                    <span onClick={()=>navigate('/how-it-works')}>How it works</span>
-                    <span onClick={()=>navigate('/gigs')}>{getTranslation('nav.freelance', currentLanguage)}</span>
-                    <LanguageSwitcher />
-                    <Link to='/login' className='link' key={333}><span>{getTranslation('nav.signIn', currentLanguage)}</span></Link>
 
-                    {!current_user?.isSeller && <span onClick={e => navigate('/register?seller=1')}>{getTranslation('nav.becomeSeller', currentLanguage)}</span>}
-                    {!current_user && <button onClick={e => navigate(`/register`)}>{getTranslation('nav.join', currentLanguage)}</button>}
+                <button className={`hamburger`} aria-label="Toggle menu" onClick={()=>setMobileOpen(prev=>!prev)}>
+                    <span className={mobileOpen ? 'bar open' : 'bar'}></span>
+                    <span className={mobileOpen ? 'bar open' : 'bar'}></span>
+                    <span className={mobileOpen ? 'bar open' : 'bar'}></span>
+                </button>
+
+                <div className={`links ${mobileOpen ? 'open' : ''}`}>
+                    <span onClick={()=>{navigate('/how-it-works'); setMobileOpen(false);}}>How it works</span>
+                    <span onClick={()=>{navigate('/gigs'); setMobileOpen(false);}}>{getTranslation('nav.freelance', currentLanguage)}</span>
+                    <LanguageSwitcher />
+                    <Link to='/login' className='link' key={333} onClick={()=>setMobileOpen(false)}><span>{getTranslation('nav.signIn', currentLanguage)}</span></Link>
+
+                    {!current_user?.isSeller && <span onClick={e => {navigate('/register?seller=1'); setMobileOpen(false);}}>{getTranslation('nav.becomeSeller', currentLanguage)}</span>}
+                    {!current_user && <button onClick={e => {navigate(`/register`); setMobileOpen(false);}}>{getTranslation('nav.join', currentLanguage)}</button>}
                     {
                         current_user && (
                             <div className="user" onClick={() => setopen(!open)}>
@@ -92,15 +101,15 @@ const Navbar = () => {
                                         {
                                             current_user.isSeller && (
                                                 <>
-                                                    <Link className='link' key={555} to='/mygigs'>{getTranslation('nav.gigs', currentLanguage)}</Link>
-                                                    <Link className='link' key={999} to='/add'>{getTranslation('nav.add', currentLanguage)}</Link>
+                                                    <Link className='link' key={555} to='/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
+                                                    <Link className='link' key={999} to='/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
                                                 </>
                                             )
                                         }
-                                        <Link className='link' key={9997} to={`/profile/${current_user?._id || current_user?.id}`}>{getTranslation('nav.profile', currentLanguage)}</Link>
-                                        <Link className='link' key={9996} to='/orders'>{getTranslation('nav.orders', currentLanguage)}</Link>
-                                        <Link className='link' key={9995} to='/messages'>{getTranslation('nav.messages', currentLanguage)}</Link>
-                                        <Link className='link' key={9993} onClick={handleLogout}>{getTranslation('nav.logout', currentLanguage)}</Link>
+                                        <Link className='link' key={9997} to={`/profile/${current_user?._id || current_user?.id}`} onClick={()=>setMobileOpen(false)}>{getTranslation('nav.profile', currentLanguage)}</Link>
+                                        <Link className='link' key={9996} to='/orders' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.orders', currentLanguage)}</Link>
+                                        <Link className='link' key={9995} to='/messages' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.messages', currentLanguage)}</Link>
+                                        <Link className='link' key={9993} onClick={()=>{handleLogout(); setMobileOpen(false);}}>{getTranslation('nav.logout', currentLanguage)}</Link>
                                     </div>
                                 )}
                             </div>

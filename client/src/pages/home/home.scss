@@ -236,3 +236,26 @@
         @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
     }
 }
+
+/* Global responsive adjustments for Home */
+@media (max-width: 1200px) {
+    .home .features .container,
+    .home .explore .container,
+    .home .reviews .container { width: 100%; padding-left: 16px; padding-right: 16px; }
+}
+
+@media (max-width: 900px) {
+    .home .features { padding: 60px 16px; }
+    .home .features .container .academics-grid { grid-template-columns: 1fr 1fr; }
+    .home .explore h1 { font-size: 32px; }
+    .home .explore .track { gap: 14px; }
+    .home .explore .card { min-width: 220px; }
+}
+
+@media (max-width: 700px) {
+    .home .features { padding: 48px 12px; }
+    .home .features .container p { font-size: 15px; line-height: 26px; }
+    .home .features .container .academics-grid { grid-template-columns: 1fr; }
+    .home .explore h1 { font-size: 26px; }
+    .home .explore .card { min-width: 200px; }
+}

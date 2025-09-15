@@ -25,3 +25,7 @@
         top: 40px;
     }
 }
+
+@media (max-width: 768px) {
+    .catCard { width: 100%; height: 260px; }
+}
