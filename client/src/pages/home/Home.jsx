@@ -5,6 +5,8 @@ import Featured from "../../components/featured/Featured";
 import { useNavigate } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { getTranslation } from "../../translations/translations";
+import { motion } from 'framer-motion';
+import ParticlesCanvas from '../../components/effects/ParticlesCanvas';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -36,9 +38,12 @@ const Home = () => {
     };
     return (
         <div className="home">
-            <Featured></Featured>
+            <div style={{position:'relative'}}>
+                <ParticlesCanvas />
+                <Featured></Featured>
+            </div>
             
-            <div className="features">
+            <motion.div className="features dark" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }}>
                 <div className="container">
                     <div className="item">
                         <h1>{getTranslation('home.features.title1', currentLanguage)}</h1>
@@ -75,18 +80,22 @@ const Home = () => {
                         ))}
                     </div>
                 </div>
-            </div>
+            </motion.div>
             
-            <div className="explore">
+            <motion.div className="explore" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: 0.1 }}>
                 <div className="container">
-                    <h1>{getTranslation('home.academic.title', currentLanguage)}</h1>
+                    <div className="heading-box">
+                        <h1>{getTranslation('home.academic.title', currentLanguage)}</h1>
+                    </div>
                     <div className="carousel" title="Academic services">
                         <div className="track">
                             {duplicated.map((svc, idx) => (
-                                <div
+                                <motion.div
                                     className="card"
                                     key={`${svc.value}-${idx}`}
                                     onClick={() => navigate(`/gigs?cat=${encodeURIComponent(svc.value)}`)}
+                                    whileHover={{ y: -6 }}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                                 >
                                     <div className="card-header">
                                         <div className="card-title">{getTranslation(svc.key, currentLanguage)}</div>
@@ -100,16 +109,16 @@ const Home = () => {
                                         />
                                         <div className="media-illustration">{svc.icon}</div>
                                     </div>
-                                </div>
+                                </motion.div>
                             ))}
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
             
             
             
-            <div className="reviews">
+            <motion.div className="reviews dark" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: 0.1 }}>
                 <div className="container">
                     <h2>Client reviews</h2>
                     <div className="cards">
@@ -132,7 +141,7 @@ const Home = () => {
                             company: 'School of Social Sciences',
                             logo: '/images/check.png'
                         }].map((r, i) => (
-                            <div className="review-card" key={i}>
+                            <motion.div className="review-card" key={i} whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 250, damping: 18 }}>
                                 <div className="quote-mark">“</div>
                                 <h3 className="title">{i===0 ? 'I have been working with Job Portal…' : i===1 ? 'Job Portal is my go‑to source' : 'Academic writing done right'}</h3>
                                 <p className="text">{r.quote}</p>
@@ -144,14 +153,17 @@ const Home = () => {
                                     </div>
                                     <img className="logo" src={r.logo} alt={r.company} />
                                 </div>
-                    </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
-            </div>
+            </motion.div>
         </div>
     );
 }
 
 export default Home;
+
+
+
 

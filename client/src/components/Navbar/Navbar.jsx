@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import newRequest from '../../utils/newRequest';
 import { useLanguage } from '../../contexts/LanguageContext';
 import { getTranslation } from '../../translations/translations';
-import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import { GIG_CATEGORIES } from '../../constants/categories';
 const Navbar = () => {
     const [active, setactive] = useState(false);
@@ -77,7 +76,7 @@ const Navbar = () => {
                     </div>
                 </div>}
 
-                <button className={`hamburger`} aria-label="Toggle menu" onClick={()=>setMobileOpen(prev=>!prev)}>
+                <button className={`hamburger`} aria-label="Toggle menu" onClick={()=>{ document.body.classList.toggle('menu-open'); setMobileOpen(prev=>!prev); }}>
                     <span className={mobileOpen ? 'bar open' : 'bar'}></span>
                     <span className={mobileOpen ? 'bar open' : 'bar'}></span>
                     <span className={mobileOpen ? 'bar open' : 'bar'}></span>
@@ -86,7 +85,7 @@ const Navbar = () => {
                 <div className={`links ${mobileOpen ? 'open' : ''}`}>
                     <span onClick={()=>{navigate('/how-it-works'); setMobileOpen(false);}}>How it works</span>
                     <span onClick={()=>{navigate('/gigs'); setMobileOpen(false);}}>{getTranslation('nav.freelance', currentLanguage)}</span>
-                    <LanguageSwitcher />
+                    {/* Language switcher removed as requested */}
                     <Link to='/login' className='link' key={333} onClick={()=>setMobileOpen(false)}><span>{getTranslation('nav.signIn', currentLanguage)}</span></Link>
 
                     {!current_user?.isSeller && <span onClick={e => {navigate('/register?seller=1'); setMobileOpen(false);}}>{getTranslation('nav.becomeSeller', currentLanguage)}</span>}

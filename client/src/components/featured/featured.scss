@@ -1,31 +1,25 @@
 .featured {
   height: 600px;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   color: white;
   overflow: hidden;
-  background-position: center;
-  background-image: url('hero2.webp');
-  // animation: change  infinite;
-  // animation-duration: 60s;
-  // background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
+  /* Full black hero backdrop spanning both columns */
+  background-color: #0a0a0a;
   animation-delay: 0ms;
 
+  .heroCanvas { width: 100%; height: 100%; }
+
   .container {
-    width: 50%;
-    max-width: 700px;
-    display: flex;
+    width: 1400px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     align-items: center;
-    justify-content: flex-start;
-    position: absolute;
-    left: 0;
-    padding-left: 100px;
-    padding-right: 50px;
+    gap: 24px;
+    padding: 0 32px;
 
     .left {
-      margin-top: 120px;
+      margin-top: 0;
       display: flex;
       flex-direction: column;
       gap: 30px;
@@ -50,6 +44,7 @@
         justify-content: space-between;
         overflow: hidden;
         margin: 0;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 
         .searchInput {
           display: flex;
@@ -78,11 +73,14 @@
           width: 120px;
           height: 50px;
           border: none;
-          background-color: #1dbf73;
+          background-color: #22c55e;
           color: white;
           cursor: pointer;
           font-weight: 400;
           font-size: large;
+          transition: transform .15s ease, box-shadow .15s ease, background-color .2s ease;
+          box-shadow: 0 8px 18px rgba(34,197,94,0.35);
+          &:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(34,197,94,0.45); background-color:#16a34a; }
         }
       }
 
@@ -107,14 +105,19 @@
           background-color: transparent;
           font-size: 14px;
           font-family: 'Montserrat', 'sans-serif';
+          transition: background-color .2s ease, color .2s ease, transform .15s ease;
+          will-change: transform;
 
           &:hover {
-            background: white;
-            color: black;
+            background: rgba(255,255,255,0.95);
+            color: #0b132b;
+            transform: translateY(-1px);
           }
         }
       }
     }
+    .right { position: relative; height: 520px; display:flex; align-items:center; justify-content:center; }
+    .right .heroCanvas { position: relative; height: 100%; }
   }
 }
 
@@ -150,13 +153,24 @@
 }
 
 @media (max-width: 768px) {
-  .featured { height: 520px; }
-  .featured .container { width: 100%; max-width: none; position: static; padding-left: 16px; padding-right: 16px; }
-  .featured .container .left { margin-top: 80px; gap: 20px; }
-  .featured .container .left h1 { font-size: 32px; }
-  .featured .container .left .search { flex-direction: column; gap: 10px; }
-  .featured .container .left .search button { width: 100%; }
-  .featured .container .left .popular { flex-wrap: wrap; justify-content: flex-start; }
+  .featured { height: auto; }
+  .featured .container { width: 100%; grid-template-columns: 1fr; padding-left: 16px; padding-right: 16px; }
+  .featured .container .right { display:none; }
+  .featured .container .left { margin-top: 28px; gap: 16px; }
+  .featured .container .left h1 { font-size: 30px; line-height: 1.15; }
+  .featured .container .left .search { flex-direction: column; gap: 10px; border:1px solid rgba(255,255,255,0.08); box-shadow: 0 18px 48px rgba(0,0,0,0.35); }
+  .featured .container .left .search .searchInput input { font-size: 16px; }
+  .featured .container .left .search button { width: 100%; height: 54px; border-radius: 10px; font-weight: 700; letter-spacing:.2px; }
+  .featured .container .left .popular { flex-wrap: wrap; justify-content: flex-start; gap:10px; }
+  .featured .container .left .popular button { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
+}
+
+@media (max-width: 480px) {
+  .featured { padding: 24px 0; }
+  .featured .container .right { display:none; }
+  .featured .container .left h1 { font-size: 26px; }
+  .featured .container { padding-left: 12px; padding-right: 12px; }
+  .featured .container .left .popular button { font-size: 13px; padding: 6px 10px; }
 }
 
 @media (max-width: 480px) {
