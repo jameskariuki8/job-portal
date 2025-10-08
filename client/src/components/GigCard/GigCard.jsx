@@ -15,6 +15,7 @@ const GigCard = ({ item }) => {
                 })
             })
     const [expanded, setExpanded] = useState(false);
+    const [coverIsDoc, setCoverIsDoc] = useState(!(/\.(png|jpe?g|gif|webp|svg)$/i.test(item.cover || '')));
     const currentUser = getCurrentUser();
     const initialLiked = Array.isArray(item.likedBy) && currentUser ? item.likedBy.includes(currentUser._id) : false;
     const [liked, setLiked] = useState(initialLiked);
@@ -27,7 +28,17 @@ const GigCard = ({ item }) => {
     return ([
         <Link to={`/gig/${item._id}`} className="link">
             <div className="gigCard ">
-                <img src={item.cover} alt="" />
+                {coverIsDoc ? (
+                    <div className="doc-preview">
+                        <div className="doc-icon">📄</div>
+                        <div className="doc-actions">
+                            <a href={/\.pdf$/i.test(item.cover||'') ? item.cover : `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(item.cover||'')}`} target="_blank" rel="noreferrer">View</a>
+                            <a href={item.cover} download style={{marginLeft:12}}>Download</a>
+                        </div>
+                    </div>
+                ) : (
+                    <img src={item.cover} alt="" onError={()=>setCoverIsDoc(true)} />
+                )}
                 <div className="info">
                     {isLoading ? "loading" : error ? "something wrong" : <div className="user">
                         <img src={data.img || '/images/noavtar.jpeg'} alt="" />

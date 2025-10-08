@@ -81,10 +81,10 @@ const Gigs = () => {
                 <h1>{category || searchQuery || 'All Gigs'}</h1>
                 <p>
                     {category 
-                        ? `Explore amazing ${category} services on Job Portal`
+                        ? `Explore amazing ${category} services on Essay Shop`
                         : searchQuery 
                         ? `Search results for "${searchQuery}"`
-                        : 'Explore the boundaries of art and technology with Job Portal\'s talented freelancers'
+                        : 'Explore the boundaries of art and technology with Essay Shop\'s talented freelancers'
                     }
                 </p>
                 <div className="menu">

@@ -3,10 +3,9 @@ import './Gig.scss';
 import { Slider } from "infinite-react-carousel";
 import { useQuery } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import getCurrentUser from "../../utils/getCurrentUser";
-import Reviews from "../../components/reviews/Reviews";
-import GigStatusManager from "../../components/GigStatusManager/GigStatusManager";
+ 
 
 const Gig = () => {
     const { id } = useParams();
@@ -16,7 +15,7 @@ const Gig = () => {
     const [bidDays, setBidDays] = useState(1);
     const [bidMessage, setBidMessage] = useState("");
     const [submitting, setSubmitting] = useState(false);
-    const [showReviewsModal, setShowReviewsModal] = useState(false);
+    
     
     const { isLoading, error, data } = useQuery({
         queryKey: ['gig'],
@@ -118,18 +117,6 @@ const Gig = () => {
                             </div>
                             <div className="seller-info">
                                 <h3 className="seller-name">{dataUser.username}</h3>
-                                {!isNaN(data.totalStars / data.starNumber) && (
-                                    <div className="seller-rating">
-                                        <div className="stars">
-                                            {Array(Math.round(data.totalStars / data.starNumber)).fill().map((_, i) => (
-                                                <img src="/images/star.png" alt="star" key={i} />
-                                            ))}
-                                        </div>
-                                        <span className="rating-text">
-                                            {Math.round(data.totalStars / data.starNumber)}.0
-                                        </span>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     )}
@@ -143,11 +130,21 @@ const Gig = () => {
                             {data.images && data.images.length > 0 && (
                                 <div className="image-slider-container">
                                     <Slider slideToShow={1} arrowsScroll={1} className="image-slider">
-                                        {data.images.map((img, index) => (
+                                        {data.images.map((src, index) => (
                                             <div key={index} className="slide">
-                                                <img src={img} alt={`Gig image ${index + 1}`} />
+                                                {/\.(png|jpe?g|gif|webp|svg)$/i.test(src || '') ? (
+                                                    <img src={src} alt={`Gig image ${index + 1}`} />
+                                                ) : (
+                                                    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:300,background:'#f8fafc',border:'1px solid #f1f3f5', borderRadius:8}}>
+                                                        <div style={{fontSize:56}}>📄</div>
+                                                        <div style={{marginTop:8,display:'flex',gap:12}}>
+                                                            <a href={/\.pdf$/i.test(src) ? src : `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(src)}`} target="_blank" rel="noreferrer" style={{fontWeight:700,color:'#0b4f71',textDecoration:'none'}}>View</a>
+                                                            <a href={src} download style={{fontWeight:700,color:'#0b4f71',textDecoration:'none'}}>Download</a>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
-                            ))}
+                                        ))}
                         </Slider>
                                 </div>
                             )}
@@ -177,18 +174,6 @@ const Gig = () => {
                                         </div>
                                         <div className="seller-details">
                                             <h3 className="seller-name-large">{dataUser.username}</h3>
-                                            {!isNaN(data.totalStars / data.starNumber) && (
-                                                <div className="seller-rating-large">
-                                                    <div className="stars">
-                                                        {Array(Math.round(data.totalStars / data.starNumber)).fill().map((_, i) => (
-                                                            <img src="/images/star.png" alt="star" key={i} />
-                                                        ))}
-                                                    </div>
-                                                    <span className="rating-number">
-                                                        {Math.round(data.totalStars / data.starNumber)}.0
-                                                    </span>
-                                                </div>
-                                            )}
                                     {!isOwner && (
                                                 <button 
                                                     className="contact-seller-btn"
@@ -363,10 +348,7 @@ const Gig = () => {
                                         Place Bid
                                     </button>
                                 )}
-                                <button className="reviews-open-btn" onClick={()=>setShowReviewsModal(true)}>
-                                    <span className="btn-icon">⭐</span>
-                                    Reviews
-                                </button>
+                                
                             </div>
                         </div>
                         
@@ -398,19 +380,6 @@ const Gig = () => {
                 </div>
             )}
 
-            {showReviewsModal && (
-                <div className="reviews-modal-overlay" onClick={() => setShowReviewsModal(false)}>
-                    <div className="reviews-modal" onClick={(e)=>e.stopPropagation()}>
-                        <div className="reviews-modal-header">
-                            <h3>Reviews</h3>
-                            <button className="close" onClick={()=>setShowReviewsModal(false)}>✕</button>
-                        </div>
-                        <div className="reviews-modal-body">
-                            <Reviews gigId={id} ownerId={data.userId} key={`modal-${id}`} />
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }

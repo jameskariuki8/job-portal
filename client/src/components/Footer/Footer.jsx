@@ -68,7 +68,7 @@ const Footer = () => {
                 <hr />
                 <div className="bottom">
                     <div className="left">
-                        <h2>Job Portal</h2>
+                        <h2>Essay Shop</h2>
                         <span>{getTranslation('footer.copyright', currentLanguage)}</span>
                     </div>
                     <div className="right">

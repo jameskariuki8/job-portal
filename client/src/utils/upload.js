@@ -14,7 +14,8 @@ const upload=async(file)=>{
         if (!cloudName) {
             throw new Error("Missing REACT_APP_CLOUDINARY_CLOUD_NAME env var");
         }
-        const endpoint = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+        // Use auto resource type so images, PDFs, docs, and other files are accepted
+        const endpoint = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
         const res=await axios.post(endpoint,data);
         const { secure_url } = res.data;
         return secure_url;

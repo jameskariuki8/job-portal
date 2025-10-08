@@ -129,7 +129,7 @@ const Home = () => {
                             company: 'BCG X',
                             logo: '/images/logomaker.webp'
                         }, {
-                            quote: 'Job Portal is my go-to source to find high‑quality talent I can’t find elsewhere. They always deliver.',
+                            quote: 'Essay Shop is my go-to source to find high‑quality talent I can’t find elsewhere. They always deliver.',
                             author: 'Tess Caputo',
                             role: 'Chief Operations Officer',
                             company: 'Zoetis',
@@ -143,7 +143,7 @@ const Home = () => {
                         }].map((r, i) => (
                             <motion.div className="review-card" key={i} whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 250, damping: 18 }}>
                                 <div className="quote-mark">“</div>
-                                <h3 className="title">{i===0 ? 'I have been working with Job Portal…' : i===1 ? 'Job Portal is my go‑to source' : 'Academic writing done right'}</h3>
+                                <h3 className="title">{i===0 ? 'I have been working with Essay Shop…' : i===1 ? 'Essay Shop is my go‑to source' : 'Academic writing done right'}</h3>
                                 <p className="text">{r.quote}</p>
                                 <div className="stars" aria-label="rating">★★★★★</div>
                                 <div className="person">

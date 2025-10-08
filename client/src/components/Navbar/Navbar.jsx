@@ -65,7 +65,8 @@ const Navbar = () => {
             <div className="container">
                 <div className="logo">
                     <Link to='/' className='link' onClick={()=>setMobileOpen(false)}>
-                        <span className='log'>Job Portal</span>
+                        <img src="/images/logo.png" alt="Essay Shop" style={{height:28, width:28, borderRadius:'4px', marginRight:8, verticalAlign:'middle'}} />
+                        <span className='log'>Essay Shop</span>
                     </Link>
                     <span className='dot'>.</span>
                 </div>

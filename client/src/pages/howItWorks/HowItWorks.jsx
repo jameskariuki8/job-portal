@@ -9,7 +9,7 @@ const HowItWorks = () => {
       <div className="hero">
         <div className="wrap">
           <div className="icon">🎯</div>
-          <h1>How Job Portal Works</h1>
+          <h1>How Essay Shop Works</h1>
           <p className="sub">A simple, transparent workflow for creators and bidders – from posting to completion.</p>
           <div className="cta">
             <button className="ghost" onClick={()=>navigate('/gigs')}>Browse Gigs</button>
@@ -47,7 +47,7 @@ const HowItWorks = () => {
           <ul>
             <li><span>🧭</span><div>Write clear, scannable gig descriptions. Be explicit about scope and outcomes.</div></li>
             <li><span>📆</span><div>Choose realistic timelines. Over‑deliver rather than over‑promise.</div></li>
-            <li><span>🧩</span><div>Keep communication inside Job Portal messages for clarity and safety.</div></li>
+            <li><span>🧩</span><div>Keep communication inside Essay Shop messages for clarity and safety.</div></li>
             <li><span>🔒</span><div>Only mark Complete when you’re satisfied. Reviews help the whole community.</div></li>
           </ul>
         </div>

@@ -77,7 +77,12 @@ const Add = () => {
         if (!state.cat) { alert(getTranslation('add.alert.categoryRequired', currentLanguage)); return; }
         if (!state.title || !state.desc || !state.deliveryTime) { alert(getTranslation('add.alert.requiredFields', currentLanguage)); return; }
         const payload = { ...state };
-        payload.totalPrice = Number(state.pages || 0) * Number(state.pricePerPage || 0);
+        const days = Number(state.deliveryTime || 0);
+        const pages = Number(state.pages || 0);
+        const pricePerPage = days === 1 ? 18 : (days >= 2 ? days * 10 : 0);
+        const total = pages * pricePerPage;
+        payload.pricePerPage = pricePerPage;
+        payload.totalPrice = total;
         if (editId) {
             updateMutation.mutate(payload);
         } else {
@@ -152,13 +157,13 @@ const Add = () => {
                                         <input 
                                             type="file" 
                                             id="cover"
-                                            accept="image/*"
+                                            accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,application/zip,application/x-zip-compressed"
                                             onChange={e => setsingleFile(e.target.files[0])} 
                                         />
                                         <div className="upload-placeholder">
                                             <span className="upload-icon">📁</span>
                                             <p>{getTranslation('add.media.uploadClick', currentLanguage)}</p>
-                                            <small>{getTranslation('add.media.uploadHelp', currentLanguage)}</small>
+                                            <small>Images, PDF, Word, Excel, text, or ZIP files are accepted.</small>
                                         </div>
                                     </div>
                                 </div>
@@ -171,7 +176,18 @@ const Add = () => {
                                 >
                                     {uploading ? (<><span className="spinner"></span>{getTranslation('add.media.uploading', currentLanguage)}</>) : (getTranslation('add.media.uploadBtn', currentLanguage))}
                                 </button>
-                                {state.cover && <div style={{marginTop:8}}><img src={state.cover} alt="cover" style={{width:160, height:90, objectFit:'cover', borderRadius:8, border:'1px solid #e9ecef'}}/></div>}
+                                {state.cover && (
+                                    <div style={{marginTop:8}}>
+                                        {/\.(png|jpe?g|gif|webp)$/i.test(state.cover) ? (
+                                            <img src={state.cover} alt="cover" style={{width:160, height:90, objectFit:'cover', borderRadius:8, border:'1px solid #e9ecef'}}/>
+                                        ) : (
+                                            <a href={state.cover} target="_blank" rel="noreferrer" style={{display:'inline-flex', alignItems:'center', gap:8, padding:'8px 10px', border:'1px solid #e9ecef', borderRadius:8, textDecoration:'none'}}>
+                                                <span style={{fontSize:18}}>📄</span>
+                                                <span style={{fontSize:14, color:'#0b132b'}}>View uploaded file</span>
+                                            </a>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -214,26 +230,25 @@ const Add = () => {
                                 </div>
 
                                 <div className="form-group">
-                                    <label htmlFor="pricePerPage">Price per page (USD) *</label>
+                                    <label htmlFor="pricePerPage">Price per page (auto) *</label>
                                     <div className="price-range-input">
                                         <div className="price-input">
                                             <span className="dollar-sign">$</span>
                                             <input
                                                 type="text"
-                                                inputMode="decimal"
                                                 id="pricePerPage"
                                                 name="pricePerPage"
-                                                value={state.pricePerPage}
-                                                onChange={(e)=>handleNumericChange('pricePerPage', e.target.value)}
+                                                value={(() => { const d = Number(state.deliveryTime||0); return d === 1 ? 18 : (d >= 2 ? d * 10 : 0); })()}
+                                                readOnly
                                             />
                                         </div>
                                     </div>
-                                    <small>Example: 1 page = $3. Total updates automatically.</small>
+                                    <small>Auto: per-page price — 1 day = $18; 2+ days = $10 × days.</small>
                                 </div>
 
                                 <div className="form-group">
                                     <label htmlFor="totalPrice">Total price (auto)</label>
-                                    <input type="number" id="totalPrice" name="totalPrice" value={Number(state.pages||0) * Number(state.pricePerPage||0)} readOnly />
+                                    <input type="number" id="totalPrice" name="totalPrice" value={(() => { const d = Number(state.deliveryTime||0); const p = Number(state.pages||0); const rate = d === 1 ? 18 : (d >= 2 ? d * 10 : 0); return p * rate; })()} readOnly />
                                 </div>
                                 
                                 <div className="form-group">
