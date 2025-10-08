@@ -28,14 +28,25 @@ const connect = async () => {
 //frontend port number
 app.use(cors({
   origin: (origin, callback) => {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      process.env.CLIENT_URL,
-    ].filter(Boolean);
-    if (!origin || allowedOrigins.some(o => o && origin.indexOf(o) === 0) || /\.vercel\.app$/.test(new URL(origin).host || '')) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    try {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        process.env.CLIENT_URL,
+      ].filter(Boolean);
+
+      // Allow same-origin or non-browser requests (no Origin header)
+      if (!origin) return callback(null, true);
+
+      // Allow exact match against configured client URL or localhost
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+
+      // Allow any Vercel preview or production app domain
+      const isVercel = /https?:\/\/[a-z0-9-]+\.vercel\.app$/i.test(origin);
+      if (isVercel) return callback(null, true);
+
+      return callback(new Error('Not allowed by CORS'));
+    } catch (e) {
+      return callback(new Error('CORS validation failed'));
     }
   },
   credentials: true,

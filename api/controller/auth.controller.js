@@ -60,9 +60,13 @@ export const login = async (req, res, next) => {
             isSeller: user.isSeller,
         }, process.env.JWT_KEY);
         const { password, ...info } = user._doc;
-        res.cookie("accessToken", token,
-            { httpOnly: true }
-        ).status(200).send(info);
+        res.cookie("accessToken", token, {
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+            path: "/",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        }).status(200).send(info);
     } catch (error) {
         next(error);
     }
