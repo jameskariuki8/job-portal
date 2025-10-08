@@ -64,6 +64,19 @@ app.use('/api/messages', messageRoute);
 app.use('/api/bids', bidRoute);
 app.use('/api/user-reviews', userReviewRoute);
 
+// Lightweight health endpoint to validate env and DB connectivity in Vercel
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    ok: true,
+    mongoConnected: mongoose.connection.readyState === 1,
+    env: {
+      JWT_KEY: Boolean(process.env.JWT_KEY),
+      MONGO: Boolean(process.env.MONGO),
+      CLIENT_URL: process.env.CLIENT_URL || null,
+    }
+  });
+});
+
 
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500
