@@ -64,11 +64,35 @@ app.use('/api/messages', messageRoute);
 app.use('/api/bids', bidRoute);
 app.use('/api/user-reviews', userReviewRoute);
 
+// Track last connection error
+let lastMongoError = null;
+mongoose.connection.on('error', (err) => {
+  lastMongoError = err;
+});
+
 // Lightweight health endpoint to validate env and DB connectivity in Vercel
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  let pingOk = false;
+  let pingError = null;
+  try {
+    if (mongoose.connection.readyState !== 1) {
+      await mongoose.connect(process.env.MONGO, { serverSelectionTimeoutMS: 5000 });
+    }
+    // If connected, try a ping
+    if (mongoose.connection.readyState === 1 && mongoose.connection.db) {
+      // @ts-ignore - admin exists at runtime
+      await mongoose.connection.db.admin().ping();
+      pingOk = true;
+    }
+  } catch (e) {
+    pingError = e instanceof Error ? e.message : String(e);
+  }
   res.status(200).json({
     ok: true,
     mongoConnected: mongoose.connection.readyState === 1,
+    pingOk,
+    lastMongoError: lastMongoError ? String(lastMongoError) : null,
+    pingError,
     env: {
       JWT_KEY: Boolean(process.env.JWT_KEY),
       MONGO: Boolean(process.env.MONGO),
