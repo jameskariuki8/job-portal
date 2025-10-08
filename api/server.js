@@ -26,7 +26,20 @@ const connect = async () => {
 };
 //middleware
 //frontend port number
-app.use(cors({origin:"http://localhost:3000",credentials:true}));
+app.use(cors({
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      process.env.CLIENT_URL,
+    ].filter(Boolean);
+    if (!origin || allowedOrigins.some(o => o && origin.indexOf(o) === 0) || /\.vercel\.app$/.test(new URL(origin).host || '')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(cookieParser());
 
@@ -47,8 +60,8 @@ app.use((err, req, res, next) => {
 
   return res.status(errorStatus).send(errorMessage);
 })
-//backend port number
-app.listen(8000, () => {
-  connect();
-  console.log('localserver running');
-});
+
+// Initialize DB connection once when the module is loaded (works for serverless cold starts)
+connect();
+
+export default app;
