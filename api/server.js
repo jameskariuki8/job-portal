@@ -16,12 +16,32 @@ import cors from 'cors';
 const app = express();
 dotenv.config();
 mongoose.set('strictQuery', true);
+let lastMongoError = null;
+let connectionAttemptCount = 0;
+mongoose.connection.on('error', (err) => {
+  lastMongoError = err;
+});
+mongoose.connection.on('connected', () => {
+  lastMongoError = null;
+  console.log('Mongo connected');
+});
+
 const connect = async () => {
+  if (!process.env.MONGO) {
+    console.error('MONGO env var is missing');
+    return;
+  }
   try {
-    await mongoose.connect(process.env.MONGO);
+    connectionAttemptCount += 1;
+    await mongoose.connect(process.env.MONGO, {
+      serverSelectionTimeoutMS: 8000,
+      socketTimeoutMS: 20000,
+      family: 4,
+    });
     console.log('database connected');
   } catch (error) {
-    console.log(error);
+    lastMongoError = error;
+    console.error('Mongo connection error:', error?.message || error);
   }
 };
 //middleware
@@ -65,11 +85,6 @@ app.use('/api/bids', bidRoute);
 app.use('/api/user-reviews', userReviewRoute);
 
 // Track last connection error
-let lastMongoError = null;
-mongoose.connection.on('error', (err) => {
-  lastMongoError = err;
-});
-
 // Lightweight health endpoint to validate env and DB connectivity in Vercel
 app.get('/api/health', async (req, res) => {
   let pingOk = false;
@@ -90,6 +105,7 @@ app.get('/api/health', async (req, res) => {
   res.status(200).json({
     ok: true,
     mongoConnected: mongoose.connection.readyState === 1,
+    attempts: connectionAttemptCount,
     pingOk,
     lastMongoError: lastMongoError ? String(lastMongoError) : null,
     pingError,

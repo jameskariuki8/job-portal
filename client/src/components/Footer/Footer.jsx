@@ -4,9 +4,72 @@ import { useLanguage } from '../../contexts/LanguageContext';
 import { getTranslation } from '../../translations/translations';
 import { Link } from 'react-router-dom';
 import { GIG_CATEGORIES } from '../../constants/categories';
+import { motion, AnimatePresence } from 'framer-motion';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      duration: 0.6
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  }
+};
+
+const linkVariants = {
+  hover: {
+    x: 8,
+    transition: {
+      duration: 0.2,
+      ease: "easeOut"
+    }
+  }
+};
+
+const buttonVariants = {
+  hover: {
+    y: -2,
+    scale: 1.05,
+    transition: {
+      duration: 0.2,
+      ease: "easeOut"
+    }
+  },
+  tap: {
+    y: 0,
+    scale: 0.95
+  }
+};
+
+const socialVariants = {
+  hover: {
+    y: -3,
+    scale: 1.1,
+    transition: {
+      duration: 0.2,
+      ease: "easeOut"
+    }
+  }
+};
+
 const Footer = () => {
     const { currentLanguage } = useLanguage();
     const [showAllCats, setShowAllCats] = useState(false);
+    
     const languages = [
         { code: 'en', name: 'English' },
         { code: 'fr', name: 'Français' },
@@ -26,70 +89,159 @@ const Footer = () => {
         'Case study writing service': 'home.hero.caseStudy',
         'Literature review writing service': 'home.hero.literatureReview',
     };
+    
     const cats = GIG_CATEGORIES;
-    const visibleCats = showAllCats ? cats : cats.slice(0, 6);
+    const firstCats = cats.slice(0, 3);
+    const extraCats = cats.slice(3);
 
     return (
-        <div className="footer">
+        <motion.div 
+            className="footer"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            variants={containerVariants}
+        >
             <div className="container">
-                <div className="top">
-                    <div className="item">
+                <motion.div 
+                    className="top stagger-children"
+                    variants={containerVariants}
+                >
+                    {/* Categories Section */}
+                    <motion.div 
+                        className="item"
+                        variants={itemVariants}
+                    >
                         <h2>{getTranslation('footer.categories', currentLanguage)}</h2>
-                        {visibleCats.map((cat)=> (
-                            <Link key={cat} to={`/gigs?cat=${encodeURIComponent(cat)}`} className="footer-link">
-                                {getTranslation(categoryMap[cat] || cat, currentLanguage)}
-                            </Link>
+                        {firstCats.map((cat, index) => (
+                            <motion.div
+                                key={cat}
+                                variants={itemVariants}
+                                custom={index}
+                            >
+                                <Link 
+                                    to={`/gigs?cat=${encodeURIComponent(cat)}`} 
+                                    className="footer-link"
+                                >
+                                    <motion.span
+                                        variants={linkVariants}
+                                        whileHover="hover"
+                                    >
+                                        {getTranslation(categoryMap[cat] || cat, currentLanguage)}
+                                    </motion.span>
+                                </Link>
+                            </motion.div>
                         ))}
-                        <button style={{marginTop:8}} className="readmore" onClick={()=>setShowAllCats(!showAllCats)}>
+                        <AnimatePresence initial={false}>
+                          {showAllCats && extraCats.map((cat, index) => (
+                            <motion.div
+                              key={cat}
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.25 }}
+                            >
+                              <Link 
+                                to={`/gigs?cat=${encodeURIComponent(cat)}`} 
+                                className="footer-link"
+                              >
+                                <motion.span whileHover="hover" variants={linkVariants}>
+                                  {getTranslation(categoryMap[cat] || cat, currentLanguage)}
+                                </motion.span>
+                              </Link>
+                            </motion.div>
+                          ))}
+                        </AnimatePresence>
+                        <motion.button 
+                            className="readmore" 
+                            onClick={() => setShowAllCats(!showAllCats)}
+                            variants={buttonVariants}
+                            whileHover="hover"
+                            whileTap="tap"
+                        >
                             {showAllCats ? 'Show less' : 'Read more'}
-                        </button>
-                    </div>
-                    <div className="item">
-                        <h2>{getTranslation('footer.about', currentLanguage)}</h2>
-                        <span>{getTranslation('footer.careers', currentLanguage)}</span>
-                        <span>{getTranslation('footer.privacy', currentLanguage)}</span>
-                        <span>{getTranslation('footer.terms', currentLanguage)}</span>
-                    </div>
-                    <div className="item">
-                        <h2>{getTranslation('footer.support', currentLanguage)}</h2>
-                        <span>{getTranslation('footer.help', currentLanguage)}</span>
-                        <span>{getTranslation('footer.trust', currentLanguage)}</span>
-                        <span>{getTranslation('footer.guides', currentLanguage)}</span>
-                    </div>
-                    {/* Community section removed per request */}
-                    <div className="item">
-                        <h2>{getTranslation('footer.more', currentLanguage)}</h2>
-                        <span>{getTranslation('footer.enterprise', currentLanguage)}</span>
-                        <span>{getTranslation('footer.logoMaker', currentLanguage)}</span>
-                        <span>{getTranslation('footer.workspace', currentLanguage)}</span>
-                        <span>{getTranslation('footer.learn', currentLanguage)}</span>
-                    </div>
-                </div>
-                <hr />
-                <div className="bottom">
-                    <div className="left">
-                        <h2>Essay Shop</h2>
-                        <span>{getTranslation('footer.copyright', currentLanguage)}</span>
-                    </div>
-                    <div className="right">
-                        <div className="social">
-                            <a href="#"> <img src="/images/twitter.png" alt=""  /></a>
-                            <a href="#"> <img src="/images/facebook.png" alt=""  /></a>
-                            <a href="#"><img src="/images/linkedin.png" alt=""  /></a>
+                        </motion.button>
+                    </motion.div>
 
-                            <a href="#"> <img src="/images/instagram.png" alt=""  /></a> 
-                        </div>
-                        
-                        <div className="link">
-                            <img src="/images/coin.png" alt="" />
-                            <span>USD</span>
-                        </div>
-                        <img src="/images/accessibility.png" alt="" />
-                        
-                    </div>
-                </div>
+                    {/* About Section */}
+                    <motion.div 
+                        className="item"
+                        variants={itemVariants}
+                    >
+                        <h2>{getTranslation('footer.about', currentLanguage)}</h2>
+                        {[
+                            'footer.careers',
+                            'footer.privacy', 
+                            'footer.terms'
+                        ].map((key, index) => (
+                            <motion.span
+                                key={key}
+                                variants={itemVariants}
+                                custom={index}
+                                whileHover="hover"
+                            >
+                                {getTranslation(key, currentLanguage)}
+                            </motion.span>
+                        ))}
+                    </motion.div>
+
+                    {/* Support Section */}
+                    <motion.div 
+                        className="item"
+                        variants={itemVariants}
+                    >
+                        <h2>{getTranslation('footer.support', currentLanguage)}</h2>
+                        {[
+                            'footer.help',
+                            'footer.trust',
+                            'footer.guides'
+                        ].map((key, index) => (
+                            <motion.span
+                                key={key}
+                                variants={itemVariants}
+                                custom={index}
+                                whileHover="hover"
+                            >
+                                {getTranslation(key, currentLanguage)}
+                            </motion.span>
+                        ))}
+                    </motion.div>
+
+                    {/* More Section */}
+                    <motion.div 
+                        className="item"
+                        variants={itemVariants}
+                    >
+                        <h2>{getTranslation('footer.more', currentLanguage)}</h2>
+                        {[
+                            'footer.enterprise',
+                            'footer.logoMaker',
+                            'footer.workspace',
+                            'footer.learn'
+                        ].map((key, index) => (
+                            <motion.span
+                                key={key}
+                                variants={itemVariants}
+                                custom={index}
+                                whileHover="hover"
+                            >
+                                {getTranslation(key, currentLanguage)}
+                            </motion.span>
+                        ))}
+                    </motion.div>
+                </motion.div>
+
+                <motion.hr 
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                />
+
+                {/* Bottom section removed as requested */}
             </div>
-        </div>
+        </motion.div>
     );
 }
+
 export default Footer;

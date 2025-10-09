@@ -1,4 +1,4 @@
-// 1.28.50
+// Enhanced Home component with better animations and interactions
 import React from "react";
 import './home.scss';
 import Featured from "../../components/featured/Featured";
@@ -8,9 +8,54 @@ import { getTranslation } from "../../translations/translations";
 import { motion } from 'framer-motion';
 import ParticlesCanvas from '../../components/effects/ParticlesCanvas';
 
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      duration: 0.8
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: "easeOut"
+    }
+  }
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut"
+    }
+  },
+  hover: {
+    scale: 1.05,
+    y: -8,
+    transition: {
+      duration: 0.3,
+      ease: "easeInOut"
+    }
+  }
+};
+
 const Home = () => {
     const navigate = useNavigate();
     const { currentLanguage } = useLanguage();
+    
     const academicServices = [
         { value: 'Essay writing service', key: 'home.hero.essay', icon: '📄' },
         { value: 'College essay writing service', key: 'home.hero.collegeEssay', icon: '🏫' },
@@ -23,7 +68,9 @@ const Home = () => {
         { value: 'Case study writing service', key: 'home.hero.caseStudy', icon: '📊' },
         { value: 'Literature review writing service', key: 'home.hero.literatureReview', icon: '📖' },
     ];
+    
     const duplicated = [...academicServices, ...academicServices];
+    
     const categoryImageMap = {
         'Essay writing service': '/images/categories/essay.jpg',
         'College essay writing service': '/images/categories/college-essay.jpg',
@@ -36,34 +83,62 @@ const Home = () => {
         'Case study writing service': '/images/categories/case-study.jpg',
         'Literature review writing service': '/images/categories/literature-review.jpg',
     };
+
     return (
         <div className="home">
-            <div style={{position:'relative'}}>
+            {/* Hero Section with Particles */}
+            <motion.div 
+                className="hero-section"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+            >
                 <ParticlesCanvas />
-                <Featured></Featured>
-            </div>
+                <Featured />
+            </motion.div>
             
-            <motion.div className="features dark" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6 }}>
+            {/* Features Section */}
+            <motion.section 
+                className="features dark"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+            >
                 <div className="container">
-                    <div className="item">
+                    <motion.div className="item" variants={itemVariants}>
                         <h1>{getTranslation('home.features.title1', currentLanguage)}</h1>
-                        <div className="feature-points">
+                        <motion.div 
+                            className="feature-points stagger-children"
+                            variants={containerVariants}
+                        >
                             {[
                                 {title:'Academic writing, perfected', desc:'From essays to theses, get polished, original work crafted by vetted academic writers and editors.'},
                                 {title:'Transparent pricing', desc:'Only pay for the pages you need. Clear timelines, no surprises.'},
                                 {title:'On-time, every time', desc:'Meet your deadline with reliable delivery and real-time updates.'},
-                            ].map((pt, i)=> (
-                                <div className="feature-point" key={i}>
-                                    <div className="icon-wrap"><img src="/images/greencheck.png" alt="check" /></div>
+                            ].map((pt, i) => (
+                                <motion.div 
+                                    className="feature-point" 
+                                    key={i}
+                                    variants={cardVariants}
+                                    whileHover="hover"
+                                >
+                                    <div className="icon-wrap">
+                                        <img src="/images/greencheck.png" alt="check" />
+                                    </div>
                                     <div className="content">
                                         <h3>{pt.title}</h3>
                                         <p>{pt.desc}</p>
-                        </div>
-                        </div>
+                                    </div>
+                                </motion.div>
                             ))}
-                        </div>
-                        </div>
-                    <div className="academics-grid">
+                        </motion.div>
+                    </motion.div>
+                    
+                    <motion.div 
+                        className="academics-grid stagger-children"
+                        variants={containerVariants}
+                    >
                         {[
                             {icon:'📚', title:'Subject‑matter experts', desc:'Writers across STEM, humanities, business, and social sciences.'},
                             {icon:'🧭', title:'Proper structure', desc:'Crisp thesis statements, strong arguments, and logical flow.'},
@@ -71,22 +146,34 @@ const Home = () => {
                             {icon:'🔍', title:'Originality guaranteed', desc:'Plagiarism‑free writing with similarity checks on request.'},
                             {icon:'🛡️', title:'Confidential & secure', desc:'Private, encrypted communication and file handling.'},
                             {icon:'✅', title:'Revisions included', desc:'Thoughtful edits to match your rubric and feedback.'},
-                        ].map((c, i)=> (
-                            <div className="academic-card" key={i}>
+                        ].map((c, i) => (
+                            <motion.div 
+                                className="academic-card" 
+                                key={i}
+                                variants={cardVariants}
+                                whileHover="hover"
+                            >
                                 <div className="icon">{c.icon}</div>
                                 <div className="card-title">{c.title}</div>
                                 <div className="card-desc">{c.desc}</div>
-                    </div>
+                            </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
-            </motion.div>
+            </motion.section>
             
-            <motion.div className="explore" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: 0.1 }}>
+            {/* Explore Section */}
+            <motion.section 
+                className="explore"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.1 }}
+            >
                 <div className="container">
-                    <div className="heading-box">
+                    <motion.div className="heading-box" variants={itemVariants}>
                         <h1>{getTranslation('home.academic.title', currentLanguage)}</h1>
-                    </div>
+                    </motion.div>
                     <div className="carousel" title="Academic services">
                         <div className="track">
                             {duplicated.map((svc, idx) => (
@@ -94,7 +181,8 @@ const Home = () => {
                                     className="card"
                                     key={`${svc.value}-${idx}`}
                                     onClick={() => navigate(`/gigs?cat=${encodeURIComponent(svc.value)}`)}
-                                    whileHover={{ y: -6 }}
+                                    variants={cardVariants}
+                                    whileHover="hover"
                                     transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                                 >
                                     <div className="card-header">
@@ -105,7 +193,9 @@ const Home = () => {
                                             className="card-image"
                                             src={categoryImageMap[svc.value]}
                                             alt={svc.value}
-                                            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                            onError={(e) => { 
+                                                e.currentTarget.style.display = 'none'; 
+                                            }}
                                         />
                                         <div className="media-illustration">{svc.icon}</div>
                                     </div>
@@ -114,14 +204,22 @@ const Home = () => {
                         </div>
                     </div>
                 </div>
-            </motion.div>
+            </motion.section>
             
-            
-            
-            <motion.div className="reviews dark" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.6, delay: 0.1 }}>
+            {/* Reviews Section */}
+            <motion.section 
+                className="reviews dark"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.2 }}
+            >
                 <div className="container">
-                    <h2>Client reviews</h2>
-                    <div className="cards">
+                    <motion.h2 variants={itemVariants}>Client reviews</motion.h2>
+                    <motion.div 
+                        className="cards stagger-children"
+                        variants={containerVariants}
+                    >
                         {[{
                             quote: 'I have been working with our freelancers for several years now. Exceptionally talented, professional, and highly productive — the breadth and depth of talent keeps impressing us.',
                             author: 'Ian Stokes-Rees',
@@ -129,7 +227,7 @@ const Home = () => {
                             company: 'BCG X',
                             logo: '/images/logomaker.webp'
                         }, {
-                            quote: 'Essay Shop is my go-to source to find high‑quality talent I can’t find elsewhere. They always deliver.',
+                            quote: 'Essay Shop is my go-to source to find high‑quality talent I can\'t find elsewhere. They always deliver.',
                             author: 'Tess Caputo',
                             role: 'Chief Operations Officer',
                             company: 'Zoetis',
@@ -141,9 +239,18 @@ const Home = () => {
                             company: 'School of Social Sciences',
                             logo: '/images/check.png'
                         }].map((r, i) => (
-                            <motion.div className="review-card" key={i} whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 250, damping: 18 }}>
-                                <div className="quote-mark">“</div>
-                                <h3 className="title">{i===0 ? 'I have been working with Essay Shop…' : i===1 ? 'Essay Shop is my go‑to source' : 'Academic writing done right'}</h3>
+                            <motion.div 
+                                className="review-card" 
+                                key={i}
+                                variants={cardVariants}
+                                whileHover="hover"
+                            >
+                                <div className="quote-mark">"</div>
+                                <h3 className="title">
+                                    {i===0 ? 'I have been working with Essay Shop…' : 
+                                     i===1 ? 'Essay Shop is my go‑to source' : 
+                                     'Academic writing done right'}
+                                </h3>
                                 <p className="text">{r.quote}</p>
                                 <div className="stars" aria-label="rating">★★★★★</div>
                                 <div className="person">
@@ -155,15 +262,11 @@ const Home = () => {
                                 </div>
                             </motion.div>
                         ))}
-                    </div>
+                    </motion.div>
                 </div>
-            </motion.div>
+            </motion.section>
         </div>
     );
 }
 
 export default Home;
-
-
-
-
