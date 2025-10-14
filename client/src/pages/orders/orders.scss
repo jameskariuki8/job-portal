@@ -62,40 +62,12 @@
         }
     }
 
-    // Mobile Filter Toggle
-    .mobile-filter-toggle {
-        display: none;
-        padding: 1rem 1.5rem;
-        background: rgba(15, 15, 35, 0.8);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        position: sticky;
-        top: 0;
-        z-index: 100;
-
-        .filter-btn {
-            background: linear-gradient(135deg, #8B5CF6, #3B82F6);
-            border: none;
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1rem;
-        }
-    }
+    // Mobile Filter Toggle removed
+    .mobile-filter-toggle { display: none; }
 
     // Sidebar Styles
     .gig-sidebar {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 20px;
-        padding: 1.5rem;
-        position: sticky;
-        top: 2rem;
-        height: fit-content;
+        display: none; // removed filters
 
         .sidebar-background {
             position: absolute;
@@ -741,35 +713,7 @@
     }
 
     @media (max-width: 1024px) {
-        .container.split {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-        }
-
-        .gig-sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 320px;
-            z-index: 99;
-            border-radius: 0;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-
-            &.mobile-open {
-                transform: translateX(0);
-            }
-
-            .sidebar-head .close-sidebar {
-                display: block;
-            }
-        }
-
-        .mobile-filter-toggle {
-            display: block;
-        }
+        .container.split { grid-template-columns: 1fr; gap: 1rem; }
     }
 
     @media (max-width: 768px) {

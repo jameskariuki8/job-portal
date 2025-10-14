@@ -11,7 +11,7 @@ const Orders = () => {
     const { currentLanguage } = useLanguage();
 
     const [tab, setTab] = useState('active');
-    const [selectedGigId, setSelectedGigId] = useState('all');
+    // Removed gig filter sidebar for a simpler, fully responsive layout
     const [reviewModal, setReviewModal] = useState({ 
         open: false, 
         bid: null, 
@@ -20,7 +20,7 @@ const Orders = () => {
         comment: '' 
     });
     const [hoverStars, setHoverStars] = useState(0);
-    const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+    // Removed mobile filter drawer
     
     const BidCard = ({ bid, isOwner, isCompleted }) => {
         const [isExpanded, setIsExpanded] = useState(false);
@@ -277,86 +277,11 @@ const Orders = () => {
         const activeList = ownerActive || [];
         const completedList = ownerCompleted || [];
         const list = tab === 'active' ? activeList : completedList;
-        const gigEntries = Array.from(new Map(list.map(b => [String(b.gigId || b?.gig?._id || b?.gigId), {
-            id: String(b.gigId || b?.gig?._id || b?.gigId),
-            title: b?.gig?.title || b.gigTitle || 'Untitled Gig',
-            cover: b?.gig?.cover,
-        }])).values());
-        
-        const visible = selectedGigId === 'all' ? list : list.filter(b => String(b.gigId || b?.gig?._id || b?.gigId) === selectedGigId);
+        const visible = list;
 
         return (
             <div className="orders">
-                {/* Mobile Filter Toggle */}
-                <div className="mobile-filter-toggle">
-                    <motion.button
-                        className="filter-btn"
-                        onClick={() => setMobileFiltersOpen(!mobileFiltersOpen)}
-                        whileTap={{ scale: 0.95 }}
-                    >
-                        🎛️ Filters
-                    </motion.button>
-                </div>
-
-                <div className="container split">
-                    {/* Sidebar */}
-                    <motion.aside 
-                        className={`gig-sidebar ${mobileFiltersOpen ? 'mobile-open' : ''}`}
-                        initial={false}
-                        animate={{ x: mobileFiltersOpen ? 0 : -300 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    >
-                        <div className="sidebar-background"></div>
-                        <div className="sidebar-content">
-                            <div className="sidebar-head">
-                                <h3>Your Gigs</h3>
-                                <button 
-                                    className="close-sidebar"
-                                    onClick={() => setMobileFiltersOpen(false)}
-                                >
-                                    ✕
-                                </button>
-                            </div>
-                            <button 
-                                className={selectedGigId === 'all' ? 'gig-pill active' : 'gig-pill'} 
-                                onClick={() => {
-                                    setSelectedGigId('all');
-                                    setMobileFiltersOpen(false);
-                                }}
-                            >
-                                <span className="pill-icon">📦</span>
-                                <span>All gigs</span>
-                            </button>
-                            {gigEntries.map(g => (
-                                <button 
-                                    key={g.id} 
-                                    className={selectedGigId === g.id ? 'gig-pill active' : 'gig-pill'} 
-                                    onClick={() => {
-                                        setSelectedGigId(g.id);
-                                        setMobileFiltersOpen(false);
-                                    }}
-                                >
-                                    {g.cover && <img src={g.cover} alt="" />}
-                                    <span>{g.title}</span>
-                                </button>
-                            ))}
-                            <div className="tabs sidebar-tabs">
-                                <button 
-                                    className={tab === 'active' ? 'tab active' : 'tab'} 
-                                    onClick={() => setTab('active')}
-                                >
-                                    Active
-                                </button>
-                                <button 
-                                    className={tab === 'completed' ? 'tab active' : 'tab'} 
-                                    onClick={() => setTab('completed')}
-                                >
-                                    Completed
-                                </button>
-                            </div>
-                        </div>
-                    </motion.aside>
-
+                <div className="container">
                     {/* Main Content */}
                     <main className="bids-main">
                         <div className="title">
@@ -467,16 +392,6 @@ const Orders = () => {
                     )}
                 </AnimatePresence>
 
-                {/* Mobile Overlay */}
-                {mobileFiltersOpen && (
-                    <motion.div 
-                        className="sidebar-overlay"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={() => setMobileFiltersOpen(false)}
-                    />
-                )}
             </div>
         );
     }

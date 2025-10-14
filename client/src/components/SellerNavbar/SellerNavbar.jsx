@@ -43,7 +43,7 @@ const SellerNavbar = () => {
 
                 <div className="right">
                     <button className="iconbtn" title="Notifications">🔔</button>
-                    <div className="user" onClick={()=>setMenuOpen(false)}>
+                    <div className="user">
                         <img src={currentUser?.img || '/images/noavtar.jpeg'} alt="avatar" />
                         <div className="dropdown">
                             <Link to={`/profile/${currentUser?._id}`} className="item">Profile</Link>

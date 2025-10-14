@@ -50,6 +50,8 @@
 
   @media (max-width: 900px){
     .left .hamburger{ display: inline-flex; }
+    /* Keep avatar visible on the bar beside hamburger */
+    .right{ margin-left:auto; }
     /* Mobile menu is hidden until opened */
     .nav{
       position: fixed; left:0; right:0; top:56px; background: #0b0d12; border-bottom:1px solid rgba(255,255,255,0.1); padding: 10px 16px; gap:8px; flex-wrap: wrap; z-index: 1001;
