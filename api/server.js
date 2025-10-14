@@ -129,4 +129,7 @@ app.use((err, req, res, next) => {
 // Initialize DB connection once when the module is loaded (works for serverless cold starts)
 connect();
 
-export default app;
+// Export a handler compatible with Vercel serverless runtime
+export default function handler(req, res) {
+  return app(req, res);
+}
