@@ -76,7 +76,7 @@ function App() {
         },
         {
           path: "/add",
-          element: <Add />
+          element: <Navigate to="/seller/add" replace />
         },
         {
           path: "/messages",

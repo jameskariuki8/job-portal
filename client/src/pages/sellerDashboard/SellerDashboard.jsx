@@ -47,11 +47,7 @@ const SellerDashboard = () => {
     enabled: !!currentUser?.isSeller,
   });
 
-  const { data: recentGigs, isLoading: gigsLoading } = useQuery({
-    queryKey: ['seller-recent-gigs'],
-    queryFn: () => newRequest.get(`/gigs?userId=${currentUser?._id}&limit=5`).then(r => r.data),
-    enabled: !!currentUser?.isSeller,
-  });
+  // Recent gigs/messages sections removed; keep only stats and quick actions
 
   useQuery({
     queryKey: ['seller-recent-orders'],
@@ -138,46 +134,7 @@ const SellerDashboard = () => {
     </motion.button>
   );
 
-  const RecentItem = ({ item, type, onClick, loading }) => (
-    <motion.div 
-      className="recent-item"
-      onClick={!loading ? onClick : undefined}
-      whileHover={!loading ? { scale: 1.02, x: 4 } : {}}
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-    >
-      {loading ? (
-        <div className="skeleton-loader skeleton-avatar"></div>
-      ) : (
-        <div className="item-thumb">
-          {type === 'gig' ? (
-            <img src={item.cover} alt={item.title} />
-          ) : (
-            <div className="message-avatar">
-              <img src={item.otherUser?.img || '/images/noavtar.jpeg'} alt={item.otherUser?.username} />
-            </div>
-          )}
-        </div>
-      )}
-      <div className="item-content">
-        {loading ? (
-          <>
-            <div className="skeleton-loader skeleton-text short"></div>
-            <div className="skeleton-loader skeleton-text medium"></div>
-          </>
-        ) : (
-          <>
-            <h4>{type === 'gig' ? item.title : item.otherUser?.username}</h4>
-            <p>{type === 'gig' ? item.cat : (item.lastMessage?.slice(0, 50) + '...')}</p>
-            <span className="item-meta">
-              {type === 'gig' ? `$${item.priceMin}-${item.priceMax}` : 'New message'}
-            </span>
-          </>
-        )}
-      </div>
-      {!loading && <div className="item-badge"></div>}
-    </motion.div>
-  );
+  // RecentItem removed with recent sections
 
   const LoadingSkeleton = () => (
     <div className="skeleton-container">
@@ -389,65 +346,7 @@ const SellerDashboard = () => {
                       </div>
                     </div>
 
-                    {/* Recent Activity */}
-                    <div className="recent-activity">
-                      <div className="activity-section">
-                        <h3>Recent Gigs</h3>
-                        <div className="activity-list">
-                          {gigsLoading ? (
-                            [...Array(3)].map((_, i) => (
-                              <RecentItem key={i} loading={true} />
-                            ))
-                          ) : recentGigs?.length > 0 ? (
-                            recentGigs.map((gig) => (
-                              <RecentItem
-                                key={gig._id}
-                                item={gig}
-                                type="gig"
-                                onClick={() => navigate(`/gig/${gig._id}`)}
-                              />
-                            ))
-                          ) : (
-                            <div className="empty-state">
-                              <div className="empty-icon">💼</div>
-                              <p>No gigs yet</p>
-                              <button 
-                                className="cta-button"
-                                onClick={() => navigate('/add')}
-                              >
-                                Create Your First Gig
-                              </button>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="activity-section">
-                        <h3>Recent Messages</h3>
-                        <div className="activity-list">
-                          {messagesLoading ? (
-                            [...Array(3)].map((_, i) => (
-                              <RecentItem key={i} loading={true} />
-                            ))
-                          ) : messages?.length > 0 ? (
-                            messages.slice(0, 3).map((conversation) => (
-                              <RecentItem
-                                key={conversation._id}
-                                item={conversation}
-                                type="message"
-                                onClick={() => navigate(`/seller/message/${conversation._id}`)}
-                              />
-                            ))
-                          ) : (
-                            <div className="empty-state">
-                              <div className="empty-icon">💬</div>
-                              <p>No messages yet</p>
-                              <p className="empty-subtitle">Your clients will reach out soon!</p>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
+                    {/* Recent gigs/messages removed by request */}
                   </>
                 )}
               </motion.div>
