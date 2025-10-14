@@ -432,9 +432,19 @@
                 }
 
                 /* Show account section inside the drawer on mobile */
-                .user-desktop { display: flex; align-items: center; gap: 10px; }
-                .user-desktop .options { position: static; opacity: 1; pointer-events: auto; transform: none; padding: 0; border: 0; box-shadow: none; gap: 10px; }
-                .user-desktop .link { padding: 10px 0; display: block; }
+                .user-desktop { display: flex; align-items: center; gap: 14px; padding-top: 6px; }
+                .user-desktop img { width: 36px; height: 36px; border-radius: 50%; border: 1px solid #e9ecef; }
+                .user-desktop .options { 
+                    position: static; opacity: 1; pointer-events: auto; transform: none; 
+                    padding: 0; border: 0; box-shadow: none; 
+                    display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+                }
+                .user-desktop .link { 
+                    display: inline-flex; align-items: center; justify-content: center; 
+                    padding: 8px 12px; border-radius: 999px; text-decoration: none; 
+                    background: #f7f9fb; border: 1px solid #e6eef5; color: #0b2239; font-weight: 600; 
+                }
+                .user-desktop .link:hover { background: #eef5fb; border-color: #cfe3f5; color: #0a7a4a; }
                 
                 button {
                     width: 100%;
