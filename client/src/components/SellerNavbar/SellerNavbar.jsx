@@ -28,7 +28,7 @@ const SellerNavbar = () => {
                         <span></span><span></span><span></span>
                     </button>
                     <Link to="/seller/dashboard" className="brand" onClick={()=>setMenuOpen(false)}>
-                        <span className="logo">⚡</span>
+                        <img className="brand-logo" src="/images/logo.png" alt="Logo" />
                         <span className="title">Seller Hub</span>
                     </Link>
                 </div>

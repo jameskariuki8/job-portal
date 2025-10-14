@@ -44,6 +44,7 @@ function App() {
       </QueryClientProvider>
     )
   }
+  // Root layout (site-wide navbar/footer)
   const router = createBrowserRouter([
     {
       path: "/",
@@ -113,9 +114,24 @@ function App() {
           path: "/how-it-works",
           element: <HowItWorks />
         },
-        // Seller routes group (all inherit SellerNavbar)
+      ]
+    }
+    ,
+    // Seller area (no site navbar/footer). Lightweight provider shell.
+    {
+      path: "/seller",
+      element: (
+        <QueryClientProvider client={queryClient}>
+          <LanguageProvider>
+            <div className='app'>
+              <ScrollToTop />
+              <Outlet />
+            </div>
+          </LanguageProvider>
+        </QueryClientProvider>
+      ),
+      children: [
         {
-          path: "/seller",
           element: <SellerLayout />,
           children: [
             { path: "dashboard", element: <SellerDashboard /> },
@@ -125,11 +141,11 @@ function App() {
             { path: "messages", element: <Messages /> },
             { path: "message/:id", element: <Message /> },
           ]
-        },
-        // Back-compat old path
-        { path: "/seller-dashboard", element: <Navigate to="/seller/dashboard" replace /> },
+        }
       ]
-    }
+    },
+    // Back-compat old path
+    { path: "/seller-dashboard", element: <Navigate to="/seller/dashboard" replace /> },
   ]);
   return (
     [
