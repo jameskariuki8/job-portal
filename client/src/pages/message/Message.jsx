@@ -55,10 +55,28 @@ const Message = () => {
       queryClient.invalidateQueries(["messages", id]);
       queryClient.invalidateQueries(["conversations"]);
       setMessageText("");
+      // Lightweight toast
+      try {
+        const el = document.createElement('div');
+        el.className = 'msg-toast success';
+        el.textContent = 'Message sent';
+        document.body.appendChild(el);
+        setTimeout(()=>{ el.classList.add('show'); }, 10);
+        setTimeout(()=>{ el.classList.remove('show'); el.remove(); }, 1800);
+      } catch {}
     },
     onError: (err) => {
       const msg = err?.response?.data || 'Failed to send message';
-      alert(typeof msg === 'string' ? msg : 'You cannot message this user');
+      try {
+        const el = document.createElement('div');
+        el.className = 'msg-toast error';
+        el.textContent = typeof msg === 'string' ? msg : 'You cannot message this user';
+        document.body.appendChild(el);
+        setTimeout(()=>{ el.classList.add('show'); }, 10);
+        setTimeout(()=>{ el.classList.remove('show'); el.remove(); }, 2200);
+      } catch {
+        alert(typeof msg === 'string' ? msg : 'You cannot message this user');
+      }
     }
   });
 

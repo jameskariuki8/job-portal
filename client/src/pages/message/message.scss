@@ -442,6 +442,12 @@
   }
 }
 
+// Simple toast for send success/error
+.msg-toast{ position: fixed; left:50%; transform: translateX(-50%) translateY(10px); bottom: 20px; background:#111b21; color:#fff; padding:10px 14px; border-radius:10px; font-weight:700; opacity:0; transition: opacity .15s ease, transform .15s ease; z-index: 3000; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+.msg-toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
+.msg-toast.success{ background:#198754; }
+.msg-toast.error{ background:#dc3545; }
+
 // Animations
 @keyframes spin {
   0% { transform: rotate(0deg); }
