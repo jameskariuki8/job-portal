@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Add = () => {
     const [singleFile, setsingleFile] = useState(undefined);
+    const [documentFile, setDocumentFile] = useState(null);
     const [uploading, setUploading] = useState(false);
     const [state, dispatch] = useReducer(gigReducer, INITIAL_STATE);
 
@@ -40,12 +41,12 @@ const Add = () => {
     }, [existingGig]);
 
     const createMutation = useMutation({
-        mutationFn: (gig) => newRequest.post("/gigs", gig),
+        mutationFn: (gig) => newRequest.post("/gigs", gig, gig instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}),
         onSuccess: () => { queryClient.invalidateQueries(["myGigs"]) }
     });
 
     const updateMutation = useMutation({
-        mutationFn: (gig) => newRequest.patch(`/gigs/${editId}`, gig),
+        mutationFn: (gig) => newRequest.patch(`/gigs/${editId}`, gig, gig instanceof FormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {}),
         onSuccess: () => { queryClient.invalidateQueries(["myGigs"]) }
     });
 
@@ -93,10 +94,22 @@ const Add = () => {
         const total = pages * pricePerPage;
         payload.pricePerPage = pricePerPage;
         payload.totalPrice = total;
-        if (editId) {
-            updateMutation.mutate(payload);
+        // If a document file is provided, send multipart so backend stores in DB
+        if (documentFile) {
+            const form = new FormData();
+            Object.entries(payload).forEach(([k,v])=>{ if(v!==undefined && v!==null) form.append(k, typeof v === 'object' ? JSON.stringify(v) : String(v)); });
+            form.append('document', documentFile);
+            if (editId) {
+                updateMutation.mutate(form);
+            } else {
+                createMutation.mutate(form);
+            }
         } else {
-            createMutation.mutate(payload);
+            if (editId) {
+                updateMutation.mutate(payload);
+            } else {
+                createMutation.mutate(payload);
+            }
         }
         navigate('/mygigs')
     }
@@ -193,7 +206,7 @@ const Add = () => {
                             </motion.div>
                         </motion.div>
 
-                        {/* Media Section */}
+                        {/* Media Section (Photos) */}
                         <motion.div 
                             className="form-section stagger-children"
                             variants={containerVariants}
@@ -204,7 +217,7 @@ const Add = () => {
                                 <div className="section-icon">🖼️</div>
                                 <div>
                                     <h2>{getTranslation('add.media.title', currentLanguage)}</h2>
-                                    <p>{getTranslation('add.media.subtitle', currentLanguage)}</p>
+                                    <p>Upload your cover photo (images only)</p>
                                 </div>
                             </motion.div>
 
@@ -215,13 +228,13 @@ const Add = () => {
                                         <input
                                             type="file"
                                             id="cover"
-                                            accept="image/*,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/plain,application/zip,application/x-zip-compressed"
+                                            accept="image/*"
                                             onChange={e => setsingleFile(e.target.files[0])}
                                         />
                                         <div className="upload-placeholder">
                                             <span className="upload-icon">📁</span>
                                             <p>{getTranslation('add.media.uploadClick', currentLanguage)}</p>
-                                            <small>Images, PDF, Word, Excel, text, or ZIP files are accepted.</small>
+                                            <small>Accepted: PNG, JPG, GIF, WEBP.</small>
                                         </div>
                                     </div>
                                 </div>
@@ -291,6 +304,41 @@ const Add = () => {
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
+                            </motion.div>
+                        </motion.div>
+
+                        {/* Document Section */}
+                        <motion.div 
+                            className="form-section stagger-children"
+                            variants={containerVariants}
+                            initial="hidden"
+                            animate="visible"
+                        >
+                            <motion.div className="section-header" variants={itemVariants}>
+                                <div className="section-icon">📄</div>
+                                <div>
+                                    <h2>Supporting Document</h2>
+                                    <p>Upload a brief/requirements document for bidders to read or download.</p>
+                                </div>
+                            </motion.div>
+
+                            <motion.div className="media-upload" variants={itemVariants}>
+                                <div className="upload-group">
+                                    <label htmlFor="document">Attach document (optional)</label>
+                                    <div className="file-upload-area">
+                                        <input
+                                            type="file"
+                                            id="document"
+                                            accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,application/zip,application/x-zip-compressed,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                            onChange={e => setDocumentFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+                                        />
+                                        <div className="upload-placeholder">
+                                            <span className="upload-icon">📎</span>
+                                            <p>PDF, DOC/DOCX, TXT, ZIP, XLS/XLSX</p>
+                                            {documentFile && <small>Selected: {documentFile.name}</small>}
+                                        </div>
+                                    </div>
+                                </div>
                             </motion.div>
                         </motion.div>
 

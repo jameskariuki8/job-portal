@@ -10,6 +10,15 @@ export const createGig = async (req, res, next) => {
   console.log('Creating gig with data:', req.body);
   console.log('Category:', req.body.cat);
   try {
+    if (req.file) {
+      newGig.document = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+        filename: req.file.originalname,
+        size: req.file.size,
+      };
+      newGig.hasDocument = true;
+    }
     const savedGig = await newGig.save();
     console.log('Saved gig:', savedGig);
     res.status(201).json(savedGig);

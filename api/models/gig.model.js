@@ -47,6 +47,17 @@ const GigSchema = new Schema({
     type:[String],
     require:false
   },
+  // Optional document stored in database (not Cloudinary)
+  document: {
+    data: { type: Buffer, required: false },
+    contentType: { type: String, required: false },
+    filename: { type: String, required: false },
+    size: { type: Number, required: false },
+  },
+  hasDocument: {
+    type: Boolean,
+    default: false,
+  },
   deliveryTime:{
     type:Number,
     require:true

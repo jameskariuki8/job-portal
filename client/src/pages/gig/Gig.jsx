@@ -160,6 +160,20 @@ const Gig = () => {
                             </div>
                         </div>
 
+                        {data.hasDocument && (
+                            <div className="gig-document-section">
+                                <div className="section-header">
+                                    <h2>Attached Document</h2>
+                                    <div className="section-icon">📄</div>
+                                </div>
+                                <div className="document-actions">
+                                    <a className="doc-btn" href={`/api/gigs/${id}/document`} target="_blank" rel="noreferrer">View</a>
+                                    <a className="doc-btn secondary" href={`/api/gigs/${id}/document`} download>Download</a>
+                                </div>
+                                <p className="doc-note">Please review this document before placing a bid.</p>
+                            </div>
+                        )}
+
                         {!isLoadingUser && !errorUser && (
                             <div className="seller-details-section">
                                 <div className="section-header">
