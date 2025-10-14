@@ -122,7 +122,7 @@ const Register = () => {
     }
 
     try {
-      await newRequest.post('/auth/register', {
+      const response = await newRequest.post('/auth/register', {
         ...user,
         img: url
       });

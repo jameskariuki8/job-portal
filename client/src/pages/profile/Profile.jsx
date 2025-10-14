@@ -73,7 +73,7 @@ const Profile = () => {
         enabled: !!(userReviews && userReviews.length),
     });
 
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
     const isOwner = currentUser?._id === id;
 
     const updateMutation = useMutation({

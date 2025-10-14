@@ -9,7 +9,7 @@ const Reviews = ({ gigId, ownerId }) => {
   const [selectedStar, setSelectedStar] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
   const isOwner = currentUser && ownerId && currentUser._id === ownerId;
 
   const queryClient = useQueryClient();

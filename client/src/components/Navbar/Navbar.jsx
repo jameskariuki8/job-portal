@@ -27,17 +27,26 @@ const Navbar = () => {
         }
     }, []);
 
-    const current_user = JSON.parse(localStorage.getItem('currentUser'));
+    const current_user = JSON.parse(localStorage.getItem('currentUser') || 'null');
 
     const navigate = useNavigate();
 
     const handleLogout = async () => {
         try {
+            console.log('Starting logout process...');
             await newRequest.post('/auth/logout');
-            localStorage.setItem("currentUser", null);
-            navigate("/")
+            console.log('API logout successful');
+            localStorage.removeItem("currentUser");
+            console.log('Local storage cleared');
+            navigate("/");
+            window.location.reload(); // Force page reload to clear any cached state
         } catch (err) {
-            console.log(err);
+            console.log('Logout API failed:', err);
+            // Even if API call fails, clear local storage and redirect
+            localStorage.removeItem("currentUser");
+            console.log('Local storage cleared despite API failure');
+            navigate("/");
+            window.location.reload();
         }
     }
     const [input, setinput] = useState("");
@@ -101,6 +110,7 @@ const Navbar = () => {
                                         {
                                             current_user.isSeller && (
                                                 <>
+                                                    <Link className='link' key={444} to='/seller-dashboard' onClick={()=>setMobileOpen(false)}>Dashboard</Link>
                                                     <Link className='link' key={555} to='/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
                                                     <Link className='link' key={999} to='/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
                                                 </>

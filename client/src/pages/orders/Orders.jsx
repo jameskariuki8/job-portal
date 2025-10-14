@@ -5,7 +5,7 @@ import newRequest from "../../utils/newRequest";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { getTranslation } from "../../translations/translations";
 const Orders = () => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || 'null');
     const { currentLanguage } = useLanguage();
 
     const [tab, setTab] = useState('active');

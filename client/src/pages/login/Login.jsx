@@ -66,9 +66,19 @@ const Login = () => {
             
             const fromRegister = Boolean(location.state && location.state.fromRegister);
             if (fromRegister) {
-                navigate(`/profile/${res.data._id}`);
+                // Redirect sellers to dashboard, buyers to profile
+                if (res.data.isSeller) {
+                    navigate('/seller-dashboard');
+                } else {
+                    navigate(`/profile/${res.data._id}`);
+                }
             } else {
-                navigate('/');
+                // Redirect sellers to dashboard, buyers to home
+                if (res.data.isSeller) {
+                    navigate('/seller-dashboard');
+                } else {
+                    navigate('/');
+                }
             }
         } catch (err) {
             setError(err.response?.data || 'An error occurred during login');

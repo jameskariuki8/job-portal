@@ -1,5 +1,5 @@
 import express from "express";
-import {createGig,deleteGig,getGig,getGigs,updateGigStatus,toggleLikeGig} from '../controller/gig.controller.js';
+import {createGig,deleteGig,getGig,getGigs,updateGigStatus,toggleLikeGig,getSellerStats} from '../controller/gig.controller.js';
 import {verifyToken} from '../middelware/jwt.js'
 const router =express.Router();
 router.post('/',verifyToken,createGig);
@@ -8,6 +8,7 @@ router.get('/single/:id',getGig);
 router.get('/',getGigs);
 router.patch('/:gigId/status',verifyToken,updateGigStatus);
 router.post('/:id/like', verifyToken, toggleLikeGig);
+router.get('/stats', verifyToken, getSellerStats);
 router.patch('/:id',verifyToken, async (req,res,next)=>{
   try{
     const Gig = (await import('../models/gig.model.js')).default;

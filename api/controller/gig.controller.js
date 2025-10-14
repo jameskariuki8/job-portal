@@ -128,3 +128,41 @@ export const toggleLikeGig = async (req, res, next) => {
     next(err);
   }
 }
+
+export const getSellerStats = async (req, res, next) => {
+  try {
+    const userId = req.userId;
+    
+    // Get total gigs
+    const totalGigs = await Gig.countDocuments({ userId });
+    
+    // Get active orders (bids that are pending or in progress)
+    const Bid = (await import('../models/bid.model.js')).default;
+    const activeOrders = await Bid.countDocuments({ 
+      sellerId: userId, 
+      status: { $in: ['pending', 'approved', 'in_progress'] } 
+    });
+    
+    // Get total revenue (sum of completed bids)
+    const completedBids = await Bid.find({ 
+      sellerId: userId, 
+      status: 'completed' 
+    });
+    const totalRevenue = completedBids.reduce((sum, bid) => sum + (bid.amount || 0), 0);
+    
+    // Get recent gigs
+    const recentGigs = await Gig.find({ userId })
+      .sort({ createdAt: -1 })
+      .limit(5)
+      .select('title cover cat priceMin priceMax status createdAt');
+    
+    res.status(200).json({
+      totalGigs,
+      activeOrders,
+      totalRevenue,
+      recentGigs
+    });
+  } catch (err) {
+    next(err);
+  }
+};

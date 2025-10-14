@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import './message.scss';
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import newRequest from "../../utils/newRequest";
 import moment from 'moment';
@@ -9,7 +9,7 @@ const Message = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || 'null');
   const messagesEndRef = useRef(null);
   const [messageText, setMessageText] = useState("");
 

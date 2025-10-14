@@ -24,6 +24,7 @@ import {
 import Profile from './pages/profile/Profile';
 import { LanguageProvider } from './contexts/LanguageContext';
 import HowItWorks from './pages/howItWorks/HowItWorks';
+import SellerDashboard from './pages/sellerDashboard/SellerDashboard';
 
 function App() {
   const queryClient = new QueryClient();
@@ -110,6 +111,10 @@ function App() {
         {
           path: "/how-it-works",
           element: <HowItWorks />
+        },
+        {
+          path: "/seller-dashboard",
+          element: <SellerDashboard />
         },
       ]
     }

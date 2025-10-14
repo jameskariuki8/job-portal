@@ -6,7 +6,7 @@ import newRequest from "../../utils/newRequest";
 import moment from 'moment';
 
 const Messages = () => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || 'null');
     const queryClient = useQueryClient();
 
     const { isLoading, error, data: conversations } = useQuery({
