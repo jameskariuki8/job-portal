@@ -377,7 +377,7 @@
                 margin-left: auto;
 
                 .user-inline {
-                    display: flex;
+                    display: none; /* Move account menu into the slide-out menu on mobile */
                     align-items: center;
                     flex-shrink: 0;
 
@@ -431,7 +431,10 @@
                     }
                 }
 
-                .user-desktop { display: none; }
+                /* Show account section inside the drawer on mobile */
+                .user-desktop { display: flex; align-items: center; gap: 10px; }
+                .user-desktop .options { position: static; opacity: 1; pointer-events: auto; transform: none; padding: 0; border: 0; box-shadow: none; gap: 10px; }
+                .user-desktop .link { padding: 10px 0; display: block; }
                 
                 button {
                     width: 100%;

@@ -92,24 +92,7 @@ const Navbar = () => {
                         <span className={mobileOpen ? 'bar open' : 'bar'}></span>
                         <span className={mobileOpen ? 'bar open' : 'bar'}></span>
                     </button>
-                    {current_user && (
-                        <div className={`user user-inline ${open ? 'open' : ''}`} onClick={() => setopen(!open)}>
-                            <img src={current_user.img || '/images/noavtar.jpeg'} alt="" />
-                            <div className="options">
-                                {current_user.isSeller && (
-                                    <>
-                                        <Link className='link' key={444} to='/seller/dashboard' onClick={()=>setMobileOpen(false)}>Dashboard</Link>
-                                        <Link className='link' key={555} to='/seller/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
-                                        <Link className='link' key={999} to='/seller/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
-                                    </>
-                                )}
-                                <Link className='link' key={9997} to={`/profile/${current_user?._id || current_user?.id}`} onClick={()=>setMobileOpen(false)}>{getTranslation('nav.profile', currentLanguage)}</Link>
-                                <Link className='link' key={9996} to='/orders' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.orders', currentLanguage)}</Link>
-                                <Link className='link' key={9995} to='/messages' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.messages', currentLanguage)}</Link>
-                                <Link className='link' key={9993} onClick={()=>{handleLogout(); setMobileOpen(false);}}>{getTranslation('nav.logout', currentLanguage)}</Link>
-                            </div>
-                        </div>
-                    )}
+                    {/* On mobile, account links appear inside the drawer, not here */}
                 </div>
 
                 <div className={`links ${mobileOpen ? 'open' : ''}`}>
