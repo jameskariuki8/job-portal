@@ -164,7 +164,7 @@
 
                 .options {
                     position: absolute;
-                    top: 50px;
+                    top: 44px;
                     right: 0;
                     padding: 16px;
                     background-color: white;
@@ -178,6 +178,7 @@
                     font-weight: 400;
                     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
                     z-index: 1002;
+                    opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity .15s ease, transform .15s ease;
 
                     .link {
                         color: #333;
@@ -190,6 +191,8 @@
                         }
                     }
                 }
+
+                &:hover .options { opacity: 1; pointer-events: auto; transform: translateY(0); }
             }
 
             button {

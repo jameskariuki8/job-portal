@@ -239,6 +239,22 @@
         line-height: 1.5;
         max-width: 400px;
       }
+
+      .no-conversations-modal {
+        margin-top: 18px;
+        .modal-card {
+          display: inline-flex;
+          align-items: center;
+          gap: 12px;
+          background: #fff;
+          border: 1px solid #e9ecef;
+          border-radius: 12px;
+          padding: 10px 14px;
+        }
+        .modal-icon { font-size: 20px; }
+        .modal-text { font-weight: 700; color: #333; }
+        .modal-btn { margin-left: 8px; background:#1dbf73; color:#fff; border:none; border-radius:8px; padding:8px 12px; cursor:pointer; }
+      }
     }
   }
 }

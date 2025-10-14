@@ -78,7 +78,7 @@ const Messages = () => {
         return { username: "Unknown User", img: "/images/noavtar.jpeg" };
     };
 
-    if (isLoading || usersLoading) {
+    if (isLoading) {
         return (
             <div className="messages-loading">
                 <div className="loader"></div>
@@ -161,6 +161,13 @@ const Messages = () => {
                         <div className="no-conversations-icon">💬</div>
                         <h3>No conversations yet</h3>
                         <p>Start chatting with sellers or buyers to see your conversations here.</p>
+                        <div className="no-conversations-modal">
+                            <div className="modal-card">
+                                <div className="modal-icon">📭</div>
+                                <div className="modal-text">No messages now</div>
+                                <button className="modal-btn" onClick={()=>window.location.href='/gigs'}>Explore gigs</button>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
