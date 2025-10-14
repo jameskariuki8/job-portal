@@ -372,10 +372,14 @@
                 order: 2;
                 align-items: center;
                 gap: 12px;
+                margin-left: auto;
 
                 .user-inline {
                     display: flex;
                     align-items: center;
+                    flex-shrink: 0;
+
+                    img { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; }
                 }
             }
             
