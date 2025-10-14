@@ -308,7 +308,7 @@ const SellerDashboard = () => {
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
                       >
-                        Your business is growing beautifully. Here's your latest performance.
+                        You need it, we've got it. Here's your latest performance.
                       </motion.p>
                     </div>
 
