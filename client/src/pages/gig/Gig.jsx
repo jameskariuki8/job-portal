@@ -134,15 +134,7 @@ const Gig = () => {
                                             <div key={index} className="slide">
                                                 {/\.(png|jpe?g|gif|webp|svg)$/i.test(src || '') ? (
                                                     <img src={src} alt={`Gig image ${index + 1}`} />
-                                                ) : (
-                                                    <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',height:300,background:'#f8fafc',border:'1px solid #f1f3f5', borderRadius:8}}>
-                                                        <div style={{fontSize:56}}>📄</div>
-                                                        <div style={{marginTop:8,display:'flex',gap:12}}>
-                                                            <a href={/\.pdf$/i.test(src) ? src : `https://docs.google.com/gview?embedded=1&url=${encodeURIComponent(src)}`} target="_blank" rel="noreferrer" style={{fontWeight:700,color:'#0b4f71',textDecoration:'none'}}>View</a>
-                                                            <a href={src} download style={{fontWeight:700,color:'#0b4f71',textDecoration:'none'}}>Download</a>
-                                                        </div>
-                                                    </div>
-                                                )}
+                                                ) : null}
                                             </div>
                                         ))}
                         </Slider>
@@ -167,7 +159,7 @@ const Gig = () => {
                                     <div className="section-icon">📄</div>
                                 </div>
                                 <div className="document-actions">
-                                    <a className="doc-btn" href={`${apiBaseUrl.replace(/\/$/, '')}/gigs/${id}/document`} target="_blank" rel="noreferrer">View</a>
+                                    <a className="doc-btn primary" href={`${apiBaseUrl.replace(/\/$/, '')}/gigs/${id}/document`} target="_blank" rel="noreferrer">View document</a>
                                     <a className="doc-btn secondary" href={`${apiBaseUrl.replace(/\/$/, '')}/gigs/${id}/document`} download>Download</a>
                                 </div>
                                 <p className="doc-note">Please review this document before placing a bid.</p>

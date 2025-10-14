@@ -43,7 +43,7 @@ const SellerNavbar = () => {
 
                 <div className="right">
                     <button className="iconbtn" title="Notifications">🔔</button>
-                    <div className="user">
+                    <div className="user" onClick={(e)=>{ e.stopPropagation(); e.currentTarget.classList.toggle('open'); }}>
                         <img src={currentUser?.img || '/images/noavtar.jpeg'} alt="avatar" />
                         <div className="dropdown">
                             <Link to={`/profile/${currentUser?._id}`} className="item">Profile</Link>
