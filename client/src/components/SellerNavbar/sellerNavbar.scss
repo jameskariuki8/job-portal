@@ -19,7 +19,7 @@
     align-items: center;
     gap: 12px;
     .hamburger{
-      width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; display: none; align-items: center; justify-content: center; cursor: pointer;
       span{ display:block; width:18px; height:2px; background:#e5e7eb; margin:2px 0; transition: .2s; }
       &.open span:nth-child(1){ transform: translateY(4px) rotate(45deg); }
       &.open span:nth-child(2){ opacity: 0; }
@@ -49,8 +49,13 @@
   }
 
   @media (max-width: 900px){
-    .nav{ position: fixed; left:0; right:0; top:56px; background: #0b0d12; border-bottom:1px solid rgba(255,255,255,0.1); padding: 10px 16px; gap:8px; transform: translateY(-120%); transition:.2s; flex-wrap: wrap; z-index: 1001; }
-    .nav.open{ transform: translateY(0); }
+    .left .hamburger{ display: inline-flex; }
+    /* Mobile menu is hidden until opened */
+    .nav{
+      position: fixed; left:0; right:0; top:56px; background: #0b0d12; border-bottom:1px solid rgba(255,255,255,0.1); padding: 10px 16px; gap:8px; flex-wrap: wrap; z-index: 1001;
+      opacity: 0; visibility: hidden; pointer-events: none; transform: translateY(-8px); transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+    }
+    .nav.open{ opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(0); transition-delay: 0s; }
   }
 }
 
