@@ -211,6 +211,16 @@
             }
         }
 
+        .headerActions {
+            display: none;
+            align-items: center;
+            gap: 12px;
+
+            .user-inline {
+                display: none;
+            }
+        }
+
         .hamburger {
             display: none;
             background: transparent;
@@ -356,6 +366,18 @@
                     background: #ffffff; /* Ensure white color in mobile view */
                 }
             }
+
+            .headerActions {
+                display: flex;
+                order: 2;
+                align-items: center;
+                gap: 12px;
+
+                .user-inline {
+                    display: flex;
+                    align-items: center;
+                }
+            }
             
             .links {
                 position: fixed;
@@ -402,6 +424,8 @@
                         padding: 0 0 0 16px;
                     }
                 }
+
+                .user-desktop { display: none; }
                 
                 button {
                     width: 100%;

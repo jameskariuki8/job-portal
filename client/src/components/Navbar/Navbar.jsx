@@ -86,11 +86,33 @@ const Navbar = () => {
                     </div>
                 </div>}
 
-                <button className={`hamburger`} aria-label="Toggle menu" onClick={()=>{ document.body.classList.toggle('menu-open'); setMobileOpen(prev=>!prev); }}>
-                    <span className={mobileOpen ? 'bar open' : 'bar'}></span>
-                    <span className={mobileOpen ? 'bar open' : 'bar'}></span>
-                    <span className={mobileOpen ? 'bar open' : 'bar'}></span>
-                </button>
+                <div className="headerActions">
+                    <button className={`hamburger`} aria-label="Toggle menu" onClick={()=>{ document.body.classList.toggle('menu-open'); setMobileOpen(prev=>!prev); }}>
+                        <span className={mobileOpen ? 'bar open' : 'bar'}></span>
+                        <span className={mobileOpen ? 'bar open' : 'bar'}></span>
+                        <span className={mobileOpen ? 'bar open' : 'bar'}></span>
+                    </button>
+                    {current_user && (
+                        <div className="user user-inline" onClick={() => setopen(!open)}>
+                            <img src={current_user.img || '/images/noavtar.jpeg'} alt="" />
+                            {open && (
+                                <div className="options">
+                                    {current_user.isSeller && (
+                                        <>
+                                            <Link className='link' key={444} to='/seller/dashboard' onClick={()=>setMobileOpen(false)}>Dashboard</Link>
+                                            <Link className='link' key={555} to='/seller/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
+                                            <Link className='link' key={999} to='/seller/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
+                                        </>
+                                    )}
+                                    <Link className='link' key={9997} to={`/profile/${current_user?._id || current_user?.id}`} onClick={()=>setMobileOpen(false)}>{getTranslation('nav.profile', currentLanguage)}</Link>
+                                    <Link className='link' key={9996} to='/orders' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.orders', currentLanguage)}</Link>
+                                    <Link className='link' key={9995} to='/messages' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.messages', currentLanguage)}</Link>
+                                    <Link className='link' key={9993} onClick={()=>{handleLogout(); setMobileOpen(false);}}>{getTranslation('nav.logout', currentLanguage)}</Link>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
 
                 <div className={`links ${mobileOpen ? 'open' : ''}`}>
                     <span onClick={()=>{navigate('/how-it-works'); setMobileOpen(false);}}>How it works</span>
@@ -100,31 +122,27 @@ const Navbar = () => {
 
                     {!current_user?.isSeller && <span onClick={e => {navigate('/register?seller=1'); setMobileOpen(false);}}>{getTranslation('nav.becomeSeller', currentLanguage)}</span>}
                     {!current_user && <button onClick={e => {navigate(`/register`); setMobileOpen(false);}}>{getTranslation('nav.join', currentLanguage)}</button>}
-                    {
-                        current_user && (
-                            <div className="user" onClick={() => setopen(!open)}>
-                                <img src={current_user.img || '/images/noavtar.jpeg'} alt="" />
-                                <span>{current_user?.username}</span>
-                                {open && (
-                                    <div className="options">
-                                        {
-                                            current_user.isSeller && (
-                                                <>
-                                                    <Link className='link' key={444} to='/seller/dashboard' onClick={()=>setMobileOpen(false)}>Dashboard</Link>
-                                                    <Link className='link' key={555} to='/seller/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
-                                                    <Link className='link' key={999} to='/seller/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
-                                                </>
-                                            )
-                                        }
-                                        <Link className='link' key={9997} to={`/profile/${current_user?._id || current_user?.id}`} onClick={()=>setMobileOpen(false)}>{getTranslation('nav.profile', currentLanguage)}</Link>
-                                        <Link className='link' key={9996} to='/orders' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.orders', currentLanguage)}</Link>
-                                        <Link className='link' key={9995} to='/messages' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.messages', currentLanguage)}</Link>
-                                        <Link className='link' key={9993} onClick={()=>{handleLogout(); setMobileOpen(false);}}>{getTranslation('nav.logout', currentLanguage)}</Link>
-                                    </div>
-                                )}
-                            </div>
-                        )
-                    }
+                    {current_user && (
+                        <div className="user user-desktop" onClick={() => setopen(!open)}>
+                            <img src={current_user.img || '/images/noavtar.jpeg'} alt="" />
+                            <span>{current_user?.username}</span>
+                            {open && (
+                                <div className="options">
+                                    {current_user.isSeller && (
+                                        <>
+                                            <Link className='link' key={444} to='/seller/dashboard' onClick={()=>setMobileOpen(false)}>Dashboard</Link>
+                                            <Link className='link' key={555} to='/seller/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
+                                            <Link className='link' key={999} to='/seller/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
+                                        </>
+                                    )}
+                                    <Link className='link' key={9997} to={`/profile/${current_user?._id || current_user?.id}`} onClick={()=>setMobileOpen(false)}>{getTranslation('nav.profile', currentLanguage)}</Link>
+                                    <Link className='link' key={9996} to='/orders' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.orders', currentLanguage)}</Link>
+                                    <Link className='link' key={9995} to='/messages' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.messages', currentLanguage)}</Link>
+                                    <Link className='link' key={9993} onClick={()=>{handleLogout(); setMobileOpen(false);}}>{getTranslation('nav.logout', currentLanguage)}</Link>
+                                </div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 

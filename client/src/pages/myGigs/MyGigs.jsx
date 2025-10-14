@@ -61,7 +61,13 @@ function MyGigs() {
           <div className="grid">
             {(data || []).map((gig) => (
               <div className="gigcard" key={gig._id}>
-                <div className="thumb"><img src={gig.cover} alt={gig.title} /></div>
+                <div className="thumb">
+                  {gig.cover ? (
+                    <img src={gig.cover} alt={gig.title} />
+                  ) : (
+                    <div className="no-visuals">No visuals</div>
+                  )}
+                </div>
                 <div className="content">
                   <div className="row1">
                     <h3 className="titletext">{gig.title}</h3>

@@ -90,7 +90,8 @@ const Add = () => {
         const payload = { ...state };
         const days = Number(state.deliveryTime || 0);
         const pages = Number(state.pages || 0);
-        const pricePerPage = days === 1 ? 18 : (days >= 2 ? days * 10 : 0);
+        // Pricing: 1 day = $18; 2+ days = $10 (flat)
+        const pricePerPage = days === 1 ? 18 : (days >= 2 ? 10 : 0);
         const total = pages * pricePerPage;
         payload.pricePerPage = pricePerPage;
         payload.totalPrice = total;
@@ -401,42 +402,7 @@ const Add = () => {
                                     <small>Specify how many pages are required.</small>
                                 </div>
 
-                                <div className="form-group">
-                                    <label htmlFor="pricePerPage">Price per page (auto) *</label>
-                                    <div className="price-range-input">
-                                        <div className="price-input">
-                                            <span className="dollar-sign">$</span>
-                                            <input
-                                                type="text"
-                                                id="pricePerPage"
-                                                name="pricePerPage"
-                                                value={(() => { 
-                                                    const d = Number(state.deliveryTime || 0); 
-                                                    return d === 1 ? 18 : (d >= 2 ? d * 10 : 0); 
-                                                })()}
-                                                readOnly
-                                            />
-                                        </div>
-                                    </div>
-                                    <small>Auto: per-page price — 1 day = $18; 2+ days = $10 × days.</small>
-                                </div>
-
-                                <div className="form-group">
-                                    <label htmlFor="totalPrice">Total price (auto)</label>
-                                    <input 
-                                        type="number" 
-                                        id="totalPrice" 
-                                        name="totalPrice" 
-                                        value={(() => { 
-                                            const d = Number(state.deliveryTime || 0); 
-                                            const p = Number(state.pages || 0); 
-                                            const rate = d === 1 ? 18 : (d >= 2 ? d * 10 : 0); 
-                                            return p * rate; 
-                                        })()} 
-                                        readOnly 
-                                    />
-                                </div>
-
+                                {/* Move Delivery Time before Price Per Page */}
                                 <div className="form-group">
                                     <label htmlFor="deliveryTime">{getTranslation('add.pricing.deliveryLabel', currentLanguage)} *</label>
                                     <div className="delivery-input">
@@ -452,6 +418,43 @@ const Add = () => {
                                         <span className="unit">{getTranslation('add.pricing.daysUnit', currentLanguage)}</span>
                                     </div>
                                     <small>{getTranslation('add.pricing.deliveryHelp', currentLanguage)}</small>
+                                </div>
+
+                                {/* Price per page now uses flat rule for 2+ days */}
+                                <div className="form-group">
+                                    <label htmlFor="pricePerPage">Price per page (auto) *</label>
+                                    <div className="price-range-input">
+                                        <div className="price-input">
+                                            <span className="dollar-sign">$</span>
+                                            <input
+                                                type="text"
+                                                id="pricePerPage"
+                                                name="pricePerPage"
+                                                value={(() => { 
+                                                    const d = Number(state.deliveryTime || 0); 
+                                                    return d === 1 ? 18 : (d >= 2 ? 10 : 0); 
+                                                })()}
+                                                readOnly
+                                            />
+                                        </div>
+                                    </div>
+                                    <small>Auto: per-page price — 1 day = $18; 2+ days = $10.</small>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="totalPrice">Total price (auto)</label>
+                                    <input 
+                                        type="number" 
+                                        id="totalPrice" 
+                                        name="totalPrice" 
+                                        value={(() => { 
+                                            const d = Number(state.deliveryTime || 0); 
+                                            const p = Number(state.pages || 0); 
+                                            const rate = d === 1 ? 18 : (d >= 2 ? 10 : 0); 
+                                            return p * rate; 
+                                        })()} 
+                                        readOnly 
+                                    />
                                 </div>
                             </motion.div>
 

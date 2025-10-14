@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import './orders.scss';
 import { useQuery } from "@tanstack/react-query";
-import newRequest from "../../utils/newRequest";
+import newRequest, { apiBaseUrl } from "../../utils/newRequest";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { getTranslation } from "../../translations/translations";
 import { motion, AnimatePresence } from "framer-motion";

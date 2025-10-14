@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import './Gig.scss';
 import { Slider } from "infinite-react-carousel";
 import { useQuery } from "@tanstack/react-query";
-import newRequest from "../../utils/newRequest";
+import newRequest, { apiBaseUrl } from "../../utils/newRequest";
 import { useNavigate, useParams } from "react-router-dom";
 import getCurrentUser from "../../utils/getCurrentUser";
  
@@ -167,8 +167,8 @@ const Gig = () => {
                                     <div className="section-icon">📄</div>
                                 </div>
                                 <div className="document-actions">
-                                    <a className="doc-btn" href={`/api/gigs/${id}/document`} target="_blank" rel="noreferrer">View</a>
-                                    <a className="doc-btn secondary" href={`/api/gigs/${id}/document`} download>Download</a>
+                                    <a className="doc-btn" href={`${apiBaseUrl.replace(/\/$/, '')}/gigs/${id}/document`} target="_blank" rel="noreferrer">View</a>
+                                    <a className="doc-btn secondary" href={`${apiBaseUrl.replace(/\/$/, '')}/gigs/${id}/document`} download>Download</a>
                                 </div>
                                 <p className="doc-note">Please review this document before placing a bid.</p>
                             </div>
