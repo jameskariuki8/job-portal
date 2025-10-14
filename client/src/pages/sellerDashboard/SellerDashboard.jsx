@@ -213,25 +213,6 @@ const SellerDashboard = () => {
 
   return (
     <div className="seller-dashboard">
-      {/* Mobile Header */}
-      <motion.div 
-        className="mobile-header"
-        initial={{ y: -50, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <button 
-          className="menu-toggle"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          <span>☰</span>
-        </button>
-        <h1>Seller Hub</h1>
-        <div className="user-avatar">
-          <img src={currentUser?.img || '/images/noavtar.jpeg'} alt={currentUser?.username} />
-        </div>
-      </motion.div>
-
       <div className="dashboard-container">
         {/* Sidebar */}
         <motion.aside 
