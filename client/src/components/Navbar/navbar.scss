@@ -191,7 +191,7 @@
                         }
                     }
                 }
-                &.open .options, .options.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+                &.open .options { opacity: 1; pointer-events: auto; transform: translateY(0); }
             }
 
             button {
