@@ -44,6 +44,7 @@ const connect = async () => {
     console.error('Mongo connection error:', error?.message || error);
   }
 };
+
 //middleware
 //frontend port number
 app.use(cors({

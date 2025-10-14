@@ -110,9 +110,9 @@ const Navbar = () => {
                                         {
                                             current_user.isSeller && (
                                                 <>
-                                                    <Link className='link' key={444} to='/seller-dashboard' onClick={()=>setMobileOpen(false)}>Dashboard</Link>
-                                                    <Link className='link' key={555} to='/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
-                                                    <Link className='link' key={999} to='/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
+                                                    <Link className='link' key={444} to='/seller/dashboard' onClick={()=>setMobileOpen(false)}>Dashboard</Link>
+                                                    <Link className='link' key={555} to='/seller/mygigs' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.gigs', currentLanguage)}</Link>
+                                                    <Link className='link' key={999} to='/seller/add' onClick={()=>setMobileOpen(false)}>{getTranslation('nav.add', currentLanguage)}</Link>
                                                 </>
                                             )
                                         }

@@ -25,6 +25,7 @@ import Profile from './pages/profile/Profile';
 import { LanguageProvider } from './contexts/LanguageContext';
 import HowItWorks from './pages/howItWorks/HowItWorks';
 import SellerDashboard from './pages/sellerDashboard/SellerDashboard';
+import SellerLayout from './layouts/SellerLayout';
 
 function App() {
   const queryClient = new QueryClient();
@@ -112,10 +113,21 @@ function App() {
           path: "/how-it-works",
           element: <HowItWorks />
         },
+        // Seller routes group (all inherit SellerNavbar)
         {
-          path: "/seller-dashboard",
-          element: <SellerDashboard />
+          path: "/seller",
+          element: <SellerLayout />,
+          children: [
+            { path: "dashboard", element: <SellerDashboard /> },
+            { path: "mygigs", element: <MyGigs /> },
+            { path: "add", element: <Add /> },
+            { path: "orders", element: <Orders /> },
+            { path: "messages", element: <Messages /> },
+            { path: "message/:id", element: <Message /> },
+          ]
         },
+        // Back-compat old path
+        { path: "/seller-dashboard", element: <Navigate to="/seller/dashboard" replace /> },
       ]
     }
   ]);

@@ -1,0 +1,57 @@
+.seller-navbar{
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(10,10,14,0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  .inner{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #e5e7eb;
+  }
+  .left{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    .hamburger{
+      width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); background: transparent; display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+      span{ display:block; width:18px; height:2px; background:#e5e7eb; margin:2px 0; transition: .2s; }
+      &.open span:nth-child(1){ transform: translateY(4px) rotate(45deg); }
+      &.open span:nth-child(2){ opacity: 0; }
+      &.open span:nth-child(3){ transform: translateY(-4px) rotate(-45deg); }
+    }
+    .brand{
+      display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #fff;
+      .logo{ font-size: 18px; }
+      .title{ font-weight: 700; letter-spacing: .3px; }
+    }
+  }
+  .nav{
+    display: flex; gap: 14px;
+    .navlink{ color:#cbd5e1; text-decoration:none; padding:8px 10px; border-radius:8px; transition:.2s; }
+    .navlink:hover{ background: rgba(255,255,255,0.06); color:#fff; }
+    .navlink.active{ background: rgba(99,102,241,0.18); color:#fff; border:1px solid rgba(99,102,241,0.35); }
+  }
+  .right{
+    display:flex; align-items:center; gap:10px;
+    .iconbtn{ width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:transparent; color:#e5e7eb; cursor:pointer; }
+    .user{ position:relative; display:flex; align-items:center; }
+    .user img{ width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); cursor:pointer; }
+    .user:hover .dropdown{ opacity:1; pointer-events:auto; transform: translateY(0); }
+    .dropdown{ position:absolute; top:44px; right:0; width:180px; background:#0b0d12; border:1px solid rgba(255,255,255,0.08); border-radius:10px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); opacity:0; pointer-events:none; transform: translateY(-4px); transition:.18s; overflow:hidden; }
+    .dropdown .item{ display:block; width:100%; padding:10px 12px; color:#e5e7eb; text-decoration:none; background:transparent; border:0; text-align:left; cursor:pointer; }
+    .dropdown .item:hover{ background: rgba(255,255,255,0.06); }
+  }
+
+  @media (max-width: 900px){
+    .nav{ position: fixed; left:0; right:0; top:56px; background: rgba(10,10,14,0.95); border-bottom:1px solid rgba(255,255,255,0.08); padding: 10px 16px; gap:8px; transform: translateY(-120%); transition:.2s; flex-wrap: wrap; }
+    .nav.open{ transform: translateY(0); }
+  }
+}
+
+
