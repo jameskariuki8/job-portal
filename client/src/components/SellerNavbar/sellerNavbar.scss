@@ -42,8 +42,7 @@
     .iconbtn{ width:36px; height:36px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); background:transparent; color:#e5e7eb; cursor:pointer; }
     .user{ position:relative; display:flex; align-items:center; }
     .user img{ width:36px; height:36px; border-radius:50%; border:1px solid rgba(255,255,255,0.15); cursor:pointer; }
-    /* Keep dropdown visible when hovered OR when parent has .open class (for click-to-open) */
-    .user.open .dropdown, .user:hover .dropdown{ opacity:1; pointer-events:auto; transform: translateY(0); }
+    .user:hover .dropdown{ opacity:1; pointer-events:auto; transform: translateY(0); }
     .dropdown{ position:absolute; top:44px; right:0; width:180px; background:#0b0d12; border:1px solid rgba(255,255,255,0.08); border-radius:10px; box-shadow: 0 10px 30px rgba(0,0,0,0.35); opacity:0; pointer-events:none; transform: translateY(-4px); transition:.18s; overflow:hidden; }
     .dropdown .item{ display:block; width:100%; padding:10px 12px; color:#e5e7eb; text-decoration:none; background:transparent; border:0; text-align:left; cursor:pointer; }
     .dropdown .item:hover{ background: rgba(255,255,255,0.06); }
