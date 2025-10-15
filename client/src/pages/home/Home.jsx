@@ -64,7 +64,7 @@ const Home = () => {
             "@type": "ProfessionalService",
             "name": "EssayShop",
             "url": "https://myessay-shop.com",
-            "logo": "https://myessay-shop.com/logo.png",
+            "logo": "https://myessay-shop.com/images/logo.png",
             "description": "Academic writing, editing, proofreading and dissertation assistance for international & European students.",
             "areaServed": [
                 { "@type": "Place", "name": "Europe" },
@@ -94,8 +94,54 @@ const Home = () => {
                 "url": "https://myessay-shop.com/contact"
             }
         });
+
+        const faqScript = document.createElement('script');
+        faqScript.type = 'application/ld+json';
+        faqScript.text = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "What academic writing services do you offer?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "We provide essay writing, coursework, research papers, dissertations/theses, and proofreading & academic editing across STEM, humanities, business, and social sciences."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Do you guarantee originality?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes. Every paper is written from scratch and can include similarity reports upon request."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How fast can you deliver?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Turnarounds range from same‑day to multi‑week projects depending on scope. We meet agreed deadlines and provide updates throughout."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Do you follow academic styles like APA or MLA?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Absolutely. We adhere to APA, MLA, Chicago, and Harvard formatting, including in‑text citations and references."
+                    }
+                }
+            ]
+        });
+
         document.head.appendChild(script);
-        return () => { document.head.removeChild(script); };
+        document.head.appendChild(faqScript);
+        return () => {
+            document.head.removeChild(script);
+            document.head.removeChild(faqScript);
+        };
     }, []);
     
     const academicServices = [

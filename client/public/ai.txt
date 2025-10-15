@@ -1,0 +1,18 @@
+# ai.txt for LLMs and AI crawlers
+Site: https://myessay-shop.com
+Owner: Essay Shop
+Contact: contact@myessay-shop.com
+Sitemap: https://myessay-shop.com/sitemap.xml
+
+# Crawl policy
+Policy: allow
+
+# About
+Description: Academic writing, editing, proofreading, and dissertation assistance for international & European students.
+Services: Essay writing; Coursework writing; Research paper; Thesis/Dissertation; Proofreading & academic editing
+Regions: Europe; United Kingdom; Germany; France
+
+# Preferred pages for grounding
+Preferred: /
+Preferred: /gigs
+Preferred: /how-it-works
