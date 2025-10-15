@@ -1,5 +1,5 @@
 // Enhanced Home component with better animations and interactions
-import React from "react";
+import React, { useEffect } from "react";
 import './home.scss';
 import Featured from "../../components/featured/Featured";
 import { useNavigate } from "react-router-dom";
@@ -55,6 +55,48 @@ const cardVariants = {
 const Home = () => {
     const navigate = useNavigate();
     const { currentLanguage } = useLanguage();
+    
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "name": "EssayShop",
+            "url": "https://myessay-shop.com",
+            "logo": "https://myessay-shop.com/logo.png",
+            "description": "Academic writing, editing, proofreading and dissertation assistance for international & European students.",
+            "areaServed": [
+                { "@type": "Place", "name": "Europe" },
+                { "@type": "Place", "name": "United Kingdom" },
+                { "@type": "Place", "name": "Germany" },
+                { "@type": "Place", "name": "France" }
+            ],
+            "serviceType": [
+                "Essay writing",
+                "Coursework writing",
+                "Dissertation / thesis writing",
+                "Proofreading & academic editing"
+            ],
+            "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Academic writing services",
+                "itemListElement": [
+                    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Essay writing" } },
+                    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Dissertation assistance" } },
+                    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Proofreading & editing" } }
+                ]
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer support",
+                "email": "contact@myessay-shop.com",
+                "url": "https://myessay-shop.com/contact"
+            }
+        });
+        document.head.appendChild(script);
+        return () => { document.head.removeChild(script); };
+    }, []);
     
     const academicServices = [
         { value: 'Essay writing service', key: 'home.hero.essay', icon: '📄' },
