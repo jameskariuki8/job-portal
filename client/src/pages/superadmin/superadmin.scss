@@ -34,6 +34,7 @@
         font-size: 2.5rem;
         font-weight: 800;
         background: linear-gradient(135deg, var(--primary), var(--primary-light));
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         margin: 0 0 8px 0;
@@ -199,9 +200,9 @@
 
       .row {
         display: grid;
-        gap: 16px;
+        gap: 12px;
         align-items: center;
-        padding: 16px 20px;
+        padding: 12px 16px;
         border-bottom: 1px solid var(--border);
 
         &:last-child {
@@ -212,9 +213,10 @@
           font-weight: 700;
           color: var(--muted);
           background: #f8fafc;
-          font-size: 0.85rem;
+          font-size: 0.8rem;
           text-transform: uppercase;
           letter-spacing: 0.5px;
+          padding: 10px 16px;
         }
 
         &.card {

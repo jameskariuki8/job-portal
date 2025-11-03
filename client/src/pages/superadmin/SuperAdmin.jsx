@@ -14,8 +14,10 @@ const SuperAdmin = () => {
   });
 
   const getGigPrice = (gig) => {
-    const price = gig.priceMin ?? gig.priceMax ?? 0;
-    return `$${Number(price)}`;
+    const total = Number(gig.pages || 0) * Number(gig.pricePerPage || 0);
+    if (total > 0) return `Total: $${total}`;
+    const fallback = gig.priceMin ?? gig.priceMax ?? 0;
+    return `Total: $${Number(fallback)}`;
   };
 
   const onDeleteUser = async (userId, username) => {
