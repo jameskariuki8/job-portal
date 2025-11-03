@@ -11,6 +11,11 @@ const SuperAdmin = () => {
     queryFn: async () => (await newRequest.get('/admin/overview')).data,
   });
 
+  const getGigPrice = (gig) => {
+    const price = gig.priceMin ?? gig.priceMax ?? 0;
+    return `$${Number(price)}`;
+  };
+
   const onDeleteUser = async (userId) => {
     if (!window.confirm('Delete this user? This cannot be undone.')) return;
     await newRequest.delete(`/admin/users/${userId}`);
@@ -35,23 +40,23 @@ const SuperAdmin = () => {
 
       <section>
         <h2>All Gigs ({gigs.length})</h2>
-        <div className="table">
+        <div className="table gigs">
           <div className="row header">
             <div>Title</div>
             <div>Category</div>
             <div>Status</div>
             <div>Creator</div>
-            <div>Price Range</div>
+            <div>Price</div>
             <div>Actions</div>
           </div>
           {gigs.map(g => (
-            <div key={g._id} className="row">
-              <div>{g.title}</div>
-              <div>{g.cat}</div>
-              <div>{g.status}</div>
-              <div>{g.creator ? `${g.creator.username} (${g.creator.email})` : g.userId}</div>
-              <div>${g.priceMin} - ${g.priceMax}</div>
-              <div>
+            <div key={g._id} className="row card">
+              <div className="title">{g.title}</div>
+              <div className="badge cat">{g.cat}</div>
+              <div className={`badge status ${g.status}`}>{g.status}</div>
+              <div className="creator">{g.creator ? `${g.creator.username} (${g.creator.email})` : g.userId}</div>
+              <div className="price">{getGigPrice(g)}</div>
+              <div className="actions">
                 <button className="danger" onClick={() => onDeleteGig(g._id)}>Delete</button>
               </div>
             </div>
@@ -61,21 +66,19 @@ const SuperAdmin = () => {
 
       <section>
         <h2>All Users ({users.length})</h2>
-        <div className="table">
+        <div className="table users">
           <div className="row header">
             <div>Username</div>
             <div>Email</div>
             <div>Seller</div>
-            <div>Verified</div>
             <div>Actions</div>
           </div>
           {users.map(u => (
-            <div key={u._id} className="row">
-              <div>{u.username}</div>
-              <div>{u.email}</div>
-              <div>{u.isSeller ? 'Yes' : 'No'}</div>
-              <div>{u.verified ? 'Yes' : 'No'}</div>
-              <div>
+            <div key={u._id} className="row card">
+              <div className="username">{u.username}</div>
+              <div className="email">{u.email}</div>
+              <div className="badge seller">{u.isSeller ? 'Seller' : 'Buyer'}</div>
+              <div className="actions">
                 <button className="danger" onClick={() => onDeleteUser(u._id)}>Delete</button>
               </div>
             </div>

@@ -1,29 +1,105 @@
 .superadmin {
+  --bg: linear-gradient(135deg, #f0f4ff 0%, #fff8f0 100%);
+  --card: #ffffff;
+  --text: #222;
+  --muted: #667085;
+  --primary: #6d5efc;
+  --primary-2: #ff6b6b;
+  --accent: #00b894;
+
+  background: var(--bg);
+  padding-bottom: 40px;
+
   h1 {
     margin: 24px 0;
+    background: linear-gradient(90deg, var(--primary), var(--primary-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
-  section { margin: 32px 0; }
+
+  section { 
+    margin: 32px 0; 
+  }
+
+  section > h2 {
+    color: var(--text);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
   .table {
     display: grid;
-    gap: 8px;
+    gap: 10px;
   }
+
   .row {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;
     gap: 12px;
     align-items: center;
-    padding: 12px;
-    border: 1px solid #eee;
-    border-radius: 8px;
-    &.header { font-weight: 600; background: #fafafa; }
+    padding: 14px;
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 14px;
+    background: var(--card);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.06);
   }
+
+  .row.header {
+    font-weight: 700;
+    color: var(--muted);
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .gigs .row {
+    grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;
+  }
+  .users .row {
+    grid-template-columns: 1.4fr 2fr 1fr 1fr;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    &.cat { background: var(--primary); }
+    &.seller { background: var(--accent); text-align: center; }
+    &.status.available { background: #12b76a; }
+    &.status.in_progress { background: #f59e0b; }
+    &.status.completed { background: #4338ca; }
+  }
+
+  .title { font-weight: 600; }
+  .creator { color: var(--muted); }
+  .price { font-weight: 700; color: var(--primary-2); }
+
+  .actions { display: flex; gap: 8px; justify-content: flex-end; }
   button.danger {
-    background: #d32f2f;
+    background: linear-gradient(180deg, #ff6b6b, #e03131);
     color: #fff;
     border: none;
     padding: 8px 12px;
-    border-radius: 6px;
+    border-radius: 10px;
     cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .gigs .row { grid-template-columns: 1.6fr 1fr 1fr 1.6fr 1fr; }
+    .users .row { grid-template-columns: 1fr 1.4fr 0.8fr 1fr; }
+  }
+
+  @media (max-width: 680px) {
+    .row.header { display: none; }
+    .gigs .row.card,
+    .users .row.card {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .actions { justify-content: flex-start; }
   }
 }
 
