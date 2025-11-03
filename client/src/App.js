@@ -11,6 +11,7 @@ import MyGigs from "./pages/myGigs/MyGigs";
 import Gig from "./pages/gig/Gig";
 import Gigs from "./pages/gigs/Gigs";
 import Home from './pages/home/Home';
+import SuperAdmin from './pages/superadmin/SuperAdmin';
 import Pay from './pages/pay/Pay';
 import Success from './pages/success/Success';
 import { createBrowserRouter, RouterProvider, Outlet, Navigate } from "react-router-dom";
@@ -113,6 +114,10 @@ function App() {
         {
           path: "/how-it-works",
           element: <HowItWorks />
+        },
+        {
+          path: "/superadmin",
+          element: <SuperAdmin />
         },
       ]
     }

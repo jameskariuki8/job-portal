@@ -10,6 +10,7 @@ import messageRoute from './routes/message.route.js';
 import authRoute from './routes/auth.route.js';
 import bidRoute from './routes/bid.route.js';
 import userReviewRoute from './routes/userReview.route.js';
+import adminRoute from './routes/admin.route.js';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 
@@ -84,6 +85,7 @@ app.use('/api/conversations', conversationRoute);
 app.use('/api/messages', messageRoute);
 app.use('/api/bids', bidRoute);
 app.use('/api/user-reviews', userReviewRoute);
+app.use('/api/admin', adminRoute);
 
 // Track last connection error
 // Lightweight health endpoint to validate env and DB connectivity in Vercel
