@@ -29,14 +29,14 @@
 
   .table {
     display: grid;
-    gap: 10px;
+    gap: 8px;
   }
 
   .row {
     display: grid;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
-    padding: 14px;
+    padding: 10px 12px;
     border: 1px solid rgba(0,0,0,0.06);
     border-radius: 14px;
     background: var(--card);
@@ -51,18 +51,17 @@
     box-shadow: none;
   }
 
-  .gigs .row {
-    grid-template-columns: 2fr 1fr 1fr 2fr 1fr 1fr;
-  }
+  .gigs { font-size: 0.92rem; }
+  .gigs .row { grid-template-columns: 1.6fr 0.9fr 0.9fr 1.8fr 0.8fr 0.8fr; }
   .users .row {
     grid-template-columns: 1.4fr 2fr 1fr 1fr;
   }
 
   .badge {
     display: inline-block;
-    padding: 6px 10px;
+    padding: 4px 8px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     color: #fff;
     &.cat { background: var(--primary); }
@@ -72,23 +71,33 @@
     &.status.completed { background: #4338ca; }
   }
 
-  .title { font-weight: 600; }
-  .creator { color: var(--muted); }
+  .title { 
+    font-weight: 600; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .creator { 
+    color: var(--muted); 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .price { font-weight: 700; color: var(--primary-2); }
 
-  .actions { display: flex; gap: 8px; justify-content: flex-end; }
+  .actions { display: flex; gap: 6px; justify-content: flex-end; }
   button.danger {
     background: linear-gradient(180deg, #ff6b6b, #e03131);
     color: #fff;
     border: none;
-    padding: 8px 12px;
-    border-radius: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
     cursor: pointer;
   }
 
   /* Responsive */
   @media (max-width: 900px) {
-    .gigs .row { grid-template-columns: 1.6fr 1fr 1fr 1.6fr 1fr; }
+    .gigs .row { grid-template-columns: 1.4fr 0.9fr 0.9fr 1.4fr 0.8fr; }
     .users .row { grid-template-columns: 1fr 1.4fr 0.8fr 1fr; }
   }
 
